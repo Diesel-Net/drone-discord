@@ -37,6 +37,11 @@ Discord bot for Drone CI Server
     - build time (how long did build take)
     - others?
 
+  - Data persistence
+    - MongoDB
+      - Overkill?
+      - Would be better than storing message ID's in memory in case of reboot or crash
+
 
 ### Setup Environment
 1. Create Python Virtual Environment and activate it
