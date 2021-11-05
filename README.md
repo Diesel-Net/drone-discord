@@ -3,6 +3,11 @@
 # drone-discord
 Discord bot for Drone CI Server
 
+## Links
+
+- [Discord Developer Portal](https://discord.com/developers)
+- [`discord.py` API Reference](https://discordpy.readthedocs.io/en/latest/api.html#)
+
 
 ### Notes
 
