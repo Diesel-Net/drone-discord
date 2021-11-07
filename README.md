@@ -6,7 +6,7 @@ Discord bot for Drone CI build logs
 ## Links
 
 - [Discord Developer Portal](https://discord.com/developers)
-- [`discord.py` API Reference](https://discordpy.readthedocs.io/en/latest/api.html#)
+  - Flask supports asyncio operations as of 2.0
 
 
 ### Notes
@@ -21,6 +21,8 @@ Discord bot for Drone CI build logs
 - Discord Bot
   - Posts drone build logs in specific channel
   - Use [discord.py](https://pypi.org/project/discord.py/)
+    - Just to display online/offline status
+      - Periodically hit a healthcheck endpoint on the api?
 
   - Create a new message on every new build
     - "Build started"
