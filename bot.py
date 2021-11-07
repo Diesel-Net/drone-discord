@@ -35,14 +35,14 @@ class Client(discord.Client):
         while not self.is_closed():             
 
             if not is_healthy():
-                print('Closing Discord connection.')
+                print('Closing Discord connection...')
                 await self.close()
 
             await asyncio.sleep(HEALTHCHECK_INTERVAL)
 
 
 def run_client_and_exit():
-    print('Initializing Discord connection.')
+    print('Initializing Discord connection...')
     client = Client()
     client.run(TOKEN)
     exit(0)
