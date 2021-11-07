@@ -2,3 +2,5 @@ venv
 .env
 flask-venv
 *.egg-info*
+**.pyc
+__pycache__
