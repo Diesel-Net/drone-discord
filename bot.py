@@ -23,7 +23,10 @@ class Client(discord.Client):
         for guild in self.guilds:
             if guild.name == GUILD:
                 break
-        print(f'{self.user} (id: {self.user.id}) is connected to {guild.name} (id: {guild.id})')
+        print(
+            f"Discord Bot '{self.user.name}' (id: {self.user.id})"
+            f" connected to '{guild.name}' (id: {guild.id})."
+        )
 
     async def healthcheck(self):
         await self.wait_until_ready()
@@ -39,23 +42,25 @@ class Client(discord.Client):
 
 
 def run_client_and_exit():
-    print('Starting Discord connection.')
+    print('Initializing Discord connection.')
     client = Client()
     client.run(TOKEN)
     exit(0)
 
 
 def fork_client_and_wait():
-    if os.fork() == 0:
+    if os.fork() == 0: 
+        # child process
         run_client_and_exit()
-    else:
+    else: 
+        # parent process
         os.wait()
 
 
 def is_healthy():
     # TODO: Add real api healthcheck here
     healthy = bool(getrandbits(1))
-    print(f'Healthcheck: {healthy}')
+    print(f'Healthy: { "yes" if healthy else "no" }')
     return healthy
 
 
@@ -63,7 +68,7 @@ def run():
     while True:
         if is_healthy():
             fork_client_and_wait()
-
+        sleep(HEALTHCHECK_INTERVAL)
 
 if __name__ == '__main__':
     run()
