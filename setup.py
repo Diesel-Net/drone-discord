@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setup(
     name='api',
-    version='0.0.0a',
+    version='1.0.0a0',
     description='Drone-Discord Build logger',
     long_description=README,
     packages=find_packages(),
