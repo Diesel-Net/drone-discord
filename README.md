@@ -14,6 +14,7 @@ Discord bot for Drone CI build logs
 - HTTP server
   - Trigger off of Drone events sent directly to my bot (over LAN)
     - [How to use global webhooks](https://discourse.drone.io/t/how-to-use-global-webhooks/3755)
+    - [HTTP Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-10)
   - Use [Flask](https://flask.palletsprojects.com/en/2.0.x/)
     - Might be overkill for one simple HTTP endpoint
 
