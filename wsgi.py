@@ -13,24 +13,6 @@ https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery
 
 """
 
-import api
-from api import logger
-from sys import argv
+from api import create_app
 
-STARTUP_EXCLUSIONS = ['init-db']
-
-connexion_app = api.create_app()
-app = connexion_app.app
-
-
-skip_startup = False
-for exclusion in STARTUP_EXCLUSIONS:
-    if exclusion in argv:
-        skip_startup = True
-
-
-if skip_startup:
-    logger.debug('Skipping startup routine!')
-else:
-    with app.app_context():
-        api.on_startup()
+app = create_app()

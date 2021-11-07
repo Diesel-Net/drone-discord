@@ -62,3 +62,13 @@ pip insall -r requirements.txt
 ```
 
 3. TODO...
+
+### Flask Server notes
+
+- https://modelpredict.com/wht-requirements-txt-is-not-enough
+
+```bash
+python3 -m venv flask-venv
+source flask-venv/bin/activate
+pip install -e .
+```

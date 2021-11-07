@@ -1,0 +1,9 @@
+flask==1.1.2
+connexion==2.7.0
+flask-cors==3.0.8
+pymongo==3.11.0
+ruamel.yaml==0.16.10
+cryptography==3.2.1
+PyJWT==1.7.1
+flask-limiter
+pendulum==2.1.2
