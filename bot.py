@@ -3,12 +3,15 @@ import asyncio
 import discord
 from dotenv import load_dotenv
 from time import sleep
+from random import getrandbits
+
 
 load_dotenv()
 
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 HEALTHCHECK_INTERVAL = int(os.getenv('HEALTHCHECK_INTERVAL'))
+
 
 class Client(discord.Client):
     def __init__(self):
@@ -26,21 +29,17 @@ class Client(discord.Client):
         await self.wait_until_ready()
         await asyncio.sleep(2)
         
-        count = 0
         while not self.is_closed():             
-            
-            api_is_healthy()
-            count += 1
 
-             # simulate a close (when flask API deemed unhealthy)
-            if count == 3:
-                print('API is unhealthy. Closing bot connection.')
+            if not is_healthy():
+                print('Closing Discord connection.')
                 await self.close()
 
             await asyncio.sleep(HEALTHCHECK_INTERVAL)
 
 
 def run_client_and_exit():
+    print('Starting Discord connection.')
     client = Client()
     client.run(TOKEN)
     exit(0)
@@ -53,21 +52,19 @@ def fork_client_and_wait():
         os.wait()
 
 
-def api_is_healthy():
-    print(f'Healthcheck.')
-    return True
+def is_healthy():
+    # TODO: Add real api healthcheck here
+    healthy = bool(getrandbits(1))
+    print(f'Healthcheck: {healthy}')
+    return healthy
 
 
 def run():
     while True:
-        if api_is_healthy():
-            print('API is healthy. Starting bot connection.')
+        if is_healthy():
             fork_client_and_wait()
 
-        #print('Sleeping.')
-        #sleep(HEALTHCHECK_INTERVAL)
 
 if __name__ == '__main__':
-
     run()
 
