@@ -20,7 +20,7 @@ class Client(discord.Client):
         self.loop.create_task(self.healthcheck())
 
     async def on_ready(self):
-        print(f"Connected as '{self.user.name}' (id: {self.user.id}).")
+        print(f"Connected as '{self.user}' (id: {self.user.id}).")
 
     async def healthcheck(self):
         await self.wait_until_ready()
@@ -35,7 +35,7 @@ class Client(discord.Client):
 def is_healthy():
     # TODO: Add real api healthcheck here
     healthy = bool(getrandbits(1))
-    print(f'Healthy? { "yes" if healthy else "no" }')
+    print(f"Healthy? { 'yes' if healthy else 'no' }")
     return healthy
 
 
@@ -47,7 +47,7 @@ if __name__ == '__main__':
                 client = Client()
                 client.run(TOKEN)
                 exit(0)
-            else: 
-                # parent
-                os.wait()
+            
+            # parent
+            os.wait()
         sleep(HEALTHCHECK_INTERVAL)
