@@ -3,11 +3,8 @@
 # drone-discord
 Discord bot for posting a Drone CI Server's build logs to a Discord channel. 
 
-#### Short Summary
-This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. It's more like a logger.
 
-A drone server can easily be configured to post all of it's events to the url of your choosing.
-Discord's low-effort webhooks solution (similar to the Drone's official GitHub integration) was contemplated, 
+This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. It's more like a logger. A drone server can easily be configured to post all of it's events to the url of your choosing. Just knowing that made Discord's low-effort Channel webhooks solution (similar to the Drone's official GitHub integration) very tempting, 
 which would have done the job just fine, however I wanted to ability to edit existing messages as well as creating new messages.
 The main (and only necessary) component that does all the work, is a very tiny Rest API (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is then used to log the events nicely in the configured channel.
 For the other piece, there is some minimal code hacked together with the soul purpose of connecting to the Gateway (WebSocket) API for being able to accuratley reflect the bot user's _Online_ status. This process periodically checks-in on the Rest API to make sure it's healthy and adjusts the bot user's online presence accordingly.
