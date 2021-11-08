@@ -30,7 +30,7 @@ class Client(discord.Client):
             await asyncio.sleep(HEALTHCHECK_INTERVAL)
 
 
-def is_healthy():
+def is_server_healthy():
     # TODO: Add real api healthcheck here
     healthy = bool(getrandbits(1))
     print(f"Healthy? { 'yes' if healthy else 'no' }")
@@ -39,7 +39,7 @@ def is_healthy():
 
 if __name__ == '__main__':
     while True:
-        if is_healthy():
+        if is_server_healthy():
             if os.fork() == 0: 
                 # child
                 client = Client()

@@ -8,7 +8,7 @@ It's more like a glorified logger with the ability to be modified or extended to
 
 #### **Why?**
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A drone server can [easily be configured](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) to post all of it's events to an HTTP endoint of your choosing. 
-Just knowing that fact made Discord's low-effort webhooks solution (similar to Discord's [GitHub integration](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)) very tempting. 
+Just knowing that fact made Discord's low-effort webhooks solution (much like Discord's [GitHub integration](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)) look very tempting.
 It would have done the job just fine, however this was limited to only being able to create new messages. I specifically wanted the ability to update existing messages as well.
 
 #### **Components**
