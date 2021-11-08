@@ -1,8 +1,7 @@
 [![Build Status](https://drone.kiwi-labs.net/api/badges/Diesel-Net/drone-discord/status.svg)](https://drone.kiwi-labs.net/Diesel-Net/drone-discord)
 
 # drone-discord
-A solution for posting Drone CI Server's build logs to Discord. 
-
+A solution for posting Drone CI's build logs to Discord. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. It's more like a logger. A drone server can easily be configured to post all of it's events to the url of your choosing. Just knowing that made Discord's low-effort Channel webhooks solution (similar to the Drone's official GitHub integration) very tempting, 
 which would have done the job just fine, however I wanted to ability to edit existing messages as well as creating new messages.
@@ -11,19 +10,8 @@ For the other piece, there is some minimal code hacked together with the soul pu
 It might be worth point out that this part of the project is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is no longer being maintained, however I am confident that this _should_ work for quite some time until Discord's Gateway API changes dramatically, for any reason.
 
 
-## Deployment
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone CI of course! A convenience script is provided to deploy manually, if needed.
-```bash
-source deploy.sh
-```
 
-## Links
-
-- [Discord Developer Portal](https://discord.com/developers)
-  - Flask supports asyncio operations as of 2.0
-
-
-### Notes
+## Implementation Notes
 
 - HTTP server
   - Trigger off of Drone events sent directly to my bot (over LAN)
@@ -67,7 +55,18 @@ source deploy.sh
       - Would be better than storing message ID's in memory in case of reboot or crash
 
 
-### Bot
+
+## Deployment
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone CI of course! A convenience script is provided to deploy manually, if needed.
+```bash
+source deploy.sh
+```
+
+
+
+## Run it locally
+
+#### Bot
 1. Create Python Virtual Environment and activate it
    ```bash
    python3 -m venv venv
@@ -81,7 +80,7 @@ source deploy.sh
 
 3. TODO...
 
-### HTTP Server
+#### HTTP Server
 
 1. Create Python Virtual Environment and activate it
    ```bash
