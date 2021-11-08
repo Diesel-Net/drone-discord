@@ -22,25 +22,29 @@ It might be worth point out that this service is currently leveraging [`discord.
 ## Implementation Notes
 
 - HTTP server
-  - Trigger off of Drone events sent directly to my bot (over LAN)
-    - [How to use global webhooks](https://discourse.drone.io/t/how-to-use-global-webhooks/3755)
-    - [HTTP Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-10)
+  - Trigger off of [drone events](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) sent directly to my bot (over LAN)
   - Use [Flask](https://flask.palletsprojects.com/en/2.0.x/)
-    - Might be overkill for one simple HTTP endpoint
-  - Add healthcheck endpoint for the persistent "bot" connection
+    - Webhook receiving endoint
+      - HTTP POST
+      - Verifies [HTTP Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-10) from Drone
+    - Healthcheck endpoint for both docker swarm and the bot service
+      - HTTP GET
+  - Data persistence
+    - Discord message ID's
+    - Use [pymongo](https://pymongo.readthedocs.io/en/stable/) to talk to MongoDB instance
 
 - Discord Bot
-  - Posts drone build logs in specific channel
-  - Not public, sense configured with a specific Drone instance and Discord server. However, a user may clone/fork do whatever to deploy on their own system's if so desired
+  - Configured to post drone build updates in a specific channel
+  - Not public, sense configured with a specific Drone instance and Discord server. However, a user may clone/fork or do whatever to deploy on their own system's if so desired
   - Use [discord.py](https://pypi.org/project/discord.py/)
-    - Just to display online/offline status
-      - Periodically hit a healthcheck endpoint on the api
+    - [Hearbeating](https://discord.com/developers/docs/topics/gateway#heartbeating) to display online/offline status
+    - Periodically checks if HTTP Server is healthy
 
-  - Create a new message on every new build
+- Logic
+  - Create a new message on every new drone build
     - "Build started"
       - Yellow
       - spinning wheel emoji while build is in progress?
-
   - Edit same message with build status
     - "Build success"
       - Green
@@ -48,8 +52,7 @@ It might be worth point out that this service is currently leveraging [`discord.
     - "Build failure"
       - Red
       - Red X emoji?
-
-  - Other metadata
+  - Other metadata to embed?
     - repo name
     - build number
     - version (branch, tag, commit)
@@ -57,10 +60,7 @@ It might be worth point out that this service is currently leveraging [`discord.
     - build time (how long did build take)
     - others?
 
-  - Data persistence
-    - MongoDB
-      - Overkill?
-      - Would be better than storing message ID's in memory in case of reboot or crash
+
 
 
 
