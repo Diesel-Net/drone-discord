@@ -72,9 +72,9 @@ It might be worth pointing out that this service is currently leveraging [`disco
 
 
 ## Requirements
-- Docker-Engine 20.10.8+
-- Ansible-Core 2.12+
 - Python 3.9+
+- Ansible-Core 2.12+
+- Docker-Engine 20.10.8+
 
 
 ## Deployment
