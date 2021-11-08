@@ -11,8 +11,7 @@ It is worth point out that I am currently leveraging [`discord.py`](https://pypi
 The other main piece to this, and the component that does all the work, is a minimal HTTP Server (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is used made to log the events nicely in the configured channel.
 
 ## Deployment
-Deployed on docker swarm and automated with Ansible. Use the convenience script to deploy manually.
-
+Deployed on docker swarm, automated with Ansible and Drone CI of course! A convenience script is provided to deploy manually, if needed.
 ```bash
 source deploy.sh
 ```
