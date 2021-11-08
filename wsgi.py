@@ -13,6 +13,6 @@ https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery
 
 """
 
-from api import create_app
+import api
 
-app = create_app()
+app = api.create_app()
