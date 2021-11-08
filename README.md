@@ -2,7 +2,7 @@
 
 # drone-discord
 #### **Summary**
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A solution for posting Drone CI's build logs to Discord. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A solution for posting [Drone](https://github.com/drone/drone)'s build logs to Discord. 
 Comprising of 2 small main components, calling this a _bot_ seems like a bit of a stretch. 
 It's more like a glorified logger with the ability to be modified or extended to support other communication platforms (like Slack).
 
