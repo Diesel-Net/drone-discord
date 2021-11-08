@@ -1,6 +1,7 @@
 .env
 venv
-api-venv
+server-venv
+client-venv
 *.egg-info*
 **.pyc
 __pycache__

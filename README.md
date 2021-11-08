@@ -75,7 +75,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
 
 
 ## Deployment
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone CI of course! A convenience script is provided to deploy manually, if needed.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone of course! A convenience script is provided to deploy manually, if needed.
 ```bash
 source deploy.sh
 ```
@@ -87,8 +87,7 @@ source deploy.sh
 #### Websocket Client
 1. Create Python Virtual Environment and activate it
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
+   python3 -m venv client-venv && source client-venv/bin/activate
    ```
 
 2. Install python depenencies
@@ -102,16 +101,12 @@ source deploy.sh
 
 1. Create Python Virtual Environment and activate it
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
+   python3 -m venv server-venv && source server-venv/bin/activate
    ```
 
 2. Install python depenencies
    ```bash
    pip install -r server-requirements.txt
    ```
-   ```bash
-   python3 -m venv api-venv
-   source api-venv/bin/activate
-   
-   ```
+
+3. TODO...
