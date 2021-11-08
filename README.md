@@ -23,15 +23,14 @@ It might be worth pointing out that this service is currently leveraging [`disco
 
 - Server (REST API)
   - Trigger off of [drone events](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) sent directly to my bot (over LAN)
-  - Use [Flask](https://flask.palletsprojects.com/en/2.0.x/)
+  - Uses [Flask](https://flask.palletsprojects.com/en/2.0.x/) microframework
     - Webhook receiving endoint
       - HTTP POST
       - Verifies [HTTP Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-10) from Drone
       - Configured to post drone events in a specific discord channel
-        - Requires Discord bot token
     - Healthcheck endpoint
-      - Use by both docker and the client service
       - HTTP GET
+      - Used by both docker and the client service
   - Data persistence
     - Discord message ID's
     - Use [pymongo](https://pymongo.readthedocs.io/en/stable/) to talk to MongoDB instance
