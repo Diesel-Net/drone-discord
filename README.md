@@ -46,6 +46,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
   - Use [`discord.py`](https://pypi.org/project/discord.py/)
     - Leverages [hearbeating](https://discord.com/developers/docs/topics/gateway#heartbeating) to display online/offline status
   - Periodically checks if HTTP Server is healthy
+    - Sets the bot user to offline in Discord if no 200 Ok response
   - Configuration
     - Discord bot token
     - Healthcheck URL
