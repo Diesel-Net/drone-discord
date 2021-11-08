@@ -1,14 +1,21 @@
 [![Build Status](https://drone.kiwi-labs.net/api/badges/Diesel-Net/drone-discord/status.svg)](https://drone.kiwi-labs.net/Diesel-Net/drone-discord)
 
 # drone-discord
-Discord bot for posting Drone CI Server's build logs to a configured channel. 
+Discord bot for posting a Drone CI Server's build logs to a Discord channel. 
 This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. 
 A drone server can easily be configured to post all of it's events to the url of your choosing. 
 I contemplated using the low-effort webhooks solution (similar to the official GitHub integration), 
-which would have done the job okay, however I wanted to ability to not just create new messages but update a existing messages as well.
+which would have done decently, however I wanted to ability to not just create new messages but update a existing messages as well.
 There is some minimal code hacked together for connecting to the Gateway (WebSocket) API with the soul purpose of being able to accuratley reflect the bot user's _Online_ status. 
-I am currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is no longer being maintained, however this should work for quite awhile unless the core websocket's API changes dramatically for any reason in the future.
-The other main piece is a minimal Flask App for receiving the webhook events from the configured Drone CI Server.
+It is worth point out that I am currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is no longer being maintained, however this _should_ work for quite awhile unless the core Gateway API systems change dramatically in the future, for any reason.
+The other main piece to this, and the component that does all the work, is a minimal HTTP Server (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is used made to log the events nicely in the configured channel.
+
+## Deployment
+Deployed on docker swarm and automated with Ansible. Use the convenience script to deploy manually.
+
+```bash
+source deploy.sh
+```
 
 ## Links
 
@@ -28,6 +35,7 @@ The other main piece is a minimal Flask App for receiving the webhook events fro
 
 - Discord Bot
   - Posts drone build logs in specific channel
+  - Not public, sense configured with a specific Drone instance and Discord server. However, a user may clone/fork do whatever to deploy on their own system's if so desired
   - Use [discord.py](https://pypi.org/project/discord.py/)
     - Just to display online/offline status
       - Periodically hit a healthcheck endpoint on the api
