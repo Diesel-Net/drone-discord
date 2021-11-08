@@ -43,7 +43,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
     - MongoDB
 
 - Client (Websocket Connection)
-  - Use [discord.py](https://pypi.org/project/discord.py/)
+  - Use [`discord.py`](https://pypi.org/project/discord.py/)
     - Leverages [hearbeating](https://discord.com/developers/docs/topics/gateway#heartbeating) to display online/offline status
   - Periodically checks if HTTP Server is healthy
   - Configuration
@@ -85,7 +85,24 @@ source deploy.sh
 
 ## Run it locally
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. 
-You should be able to use one `.env` file for both components locally and this file should be added to .gitignore to prevent accidentally committing any secrets.
+You should be able to use one `.env` file for both components locally and this file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. Each of the two components need to executed from different shells, as they have isolated python virtual environments.
+
+
+#### HTTP Server
+1. Create Python Virtual Environment and activate it
+   ```bash
+   python3 -m venv server-venv && source server-venv/bin/activate
+   ```
+
+2. Install python depenencies
+   ```bash
+   pip install -r server-requirements.txt
+   ```
+
+3. Start the Flask Development Server.
+   ```bash
+   flask run
+   ```
 
 
 #### Websocket Client
@@ -99,21 +116,7 @@ You should be able to use one `.env` file for both components locally and this f
    pip install -r client-requirements.txt
    ```
 
-4. Run the Discord client
+3. Connect the client to Discord.
    ```bash
-
+   python client.py
    ```
-
-#### HTTP Server
-
-1. Create Python Virtual Environment and activate it
-   ```bash
-   python3 -m venv server-venv && source server-venv/bin/activate
-   ```
-
-2. Install python depenencies
-   ```bash
-   pip install -r server-requirements.txt
-   ```
-
-3. TODO...
