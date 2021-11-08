@@ -20,56 +20,34 @@ class Client(discord.Client):
         self.loop.create_task(self.healthcheck())
 
     async def on_ready(self):
-        for guild in self.guilds:
-            if guild.name == GUILD:
-                break
-        print(
-            f"Discord Bot '{self.user.name}' (id: {self.user.id})"
-            f" connected to '{guild.name}' (id: {guild.id})."
-        )
+        print(f"Connected as '{self.user.name}' (id: {self.user.id}).")
 
     async def healthcheck(self):
         await self.wait_until_ready()
         await asyncio.sleep(2)
-        
         while not self.is_closed():             
-
             if not is_healthy():
-                print('Closing Discord connection...')
+                print('Closing connection.')
                 await self.close()
-
             await asyncio.sleep(HEALTHCHECK_INTERVAL)
-
-
-def run_client_and_exit():
-    print('Initializing Discord connection...')
-    client = Client()
-    client.run(TOKEN)
-    exit(0)
-
-
-def fork_client_and_wait():
-    if os.fork() == 0: 
-        # child process
-        run_client_and_exit()
-    else: 
-        # parent process
-        os.wait()
 
 
 def is_healthy():
     # TODO: Add real api healthcheck here
     healthy = bool(getrandbits(1))
-    print(f'Healthy: { "yes" if healthy else "no" }')
+    print(f'Healthy? { "yes" if healthy else "no" }')
     return healthy
 
 
-def run():
+if __name__ == '__main__':
     while True:
         if is_healthy():
-            fork_client_and_wait()
+            if os.fork() == 0: 
+                # child
+                client = Client()
+                client.run(TOKEN)
+                exit(0)
+            else: 
+                # parent
+                os.wait()
         sleep(HEALTHCHECK_INTERVAL)
-
-if __name__ == '__main__':
-    run()
-

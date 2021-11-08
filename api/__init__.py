@@ -15,5 +15,4 @@ def create_app():
     # import/register endpoints
     app.register_blueprint(log.bp)
 
-
     return app
