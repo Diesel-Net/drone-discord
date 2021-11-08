@@ -1,7 +1,7 @@
 [![Build Status](https://drone.kiwi-labs.net/api/badges/Diesel-Net/drone-discord/status.svg)](https://drone.kiwi-labs.net/Diesel-Net/drone-discord)
 
 # drone-discord
-Discord bot for posting a Drone CI Server's build logs to a Discord channel. 
+A solution for posting Drone CI Server's build logs to Discord. 
 
 
 This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. It's more like a logger. A drone server can easily be configured to post all of it's events to the url of your choosing. Just knowing that made Discord's low-effort Channel webhooks solution (similar to the Drone's official GitHub integration) very tempting, 
