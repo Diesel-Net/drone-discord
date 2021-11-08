@@ -1,11 +1,11 @@
 [![Build Status](https://drone.kiwi-labs.net/api/badges/Diesel-Net/drone-discord/status.svg)](https://drone.kiwi-labs.net/Diesel-Net/drone-discord)
 
 # drone-discord
-Discord bot for Drone CI build logs. 
-This bot is comprised of 2 main components and even calling it a "bot" is a bit of a stretch. 
-Drone CI can easily be configured to post all of it's event to the url of your choosing. 
-I contemplated using Drone's Channel webhooks (much like the GitHub integration), 
-which would have done the job okay, however I wanted to ability to not just create a message but update an existing message as well.
+Discord bot for posting Drone CI Server's build logs to a configured channel. 
+This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. 
+A drone server can easily be configured to post all of it's events to the url of your choosing. 
+I contemplated using the low-effort webhooks solution (similar to the official GitHub integration), 
+which would have done the job okay, however I wanted to ability to not just create new messages but update a existing messages as well.
 There is some minimal code hacked together for connecting to the Gateway (WebSocket) API with the soul purpose of being able to accuratley reflect the bot user's _Online_ status. 
 I am currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is no longer being maintained, however this should work for quite awhile unless the core websocket's API changes dramatically for any reason in the future.
 The other main piece is a minimal Flask App for receiving the webhook events from the configured Drone CI Server.
