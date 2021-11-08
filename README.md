@@ -86,8 +86,14 @@ source deploy.sh
 
 ## Run it locally
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. 
-You should be able to use one `.env` file for both components locally and this file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. Each of the two components need to executed from different shells, as they have isolated python virtual environments.
+You should be able to use one `.env` file for both components locally and this file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. Each of these components need to executed from different shells, as they have isolated python virtual environments.
 
+
+#### MongoDB
+1. Start a quick and dirty MongoDB Server using docker
+   ```bash
+   TODO...
+   ```
 
 #### HTTP Server
 1. Create Python Virtual Environment and activate it
