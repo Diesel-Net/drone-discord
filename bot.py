@@ -7,9 +7,7 @@ from random import getrandbits
 
 
 load_dotenv()
-
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 HEALTHCHECK_INTERVAL = int(os.getenv('HEALTHCHECK_INTERVAL'))
 
 
@@ -45,7 +43,7 @@ if __name__ == '__main__':
             if os.fork() == 0: 
                 # child
                 client = Client()
-                client.run(TOKEN)
+                client.run(DISCORD_TOKEN)
                 exit(0)
             
             # parent

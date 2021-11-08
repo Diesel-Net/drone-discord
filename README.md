@@ -21,24 +21,34 @@ It might be worth point out that this service is currently leveraging [`discord.
 
 ## Implementation Notes
 
-- HTTP server
+- Server (REST API)
   - Trigger off of [drone events](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) sent directly to my bot (over LAN)
   - Use [Flask](https://flask.palletsprojects.com/en/2.0.x/)
     - Webhook receiving endoint
       - HTTP POST
       - Verifies [HTTP Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-10) from Drone
-    - Healthcheck endpoint for both docker swarm and the bot service
+      - Configured to post drone events in a specific discord channel
+        - Requires Discord bot token
+    - Healthcheck endpoint
+      - Use by both docker and the client service
       - HTTP GET
   - Data persistence
     - Discord message ID's
     - Use [pymongo](https://pymongo.readthedocs.io/en/stable/) to talk to MongoDB instance
+  - Configuration
+    - Discord bot token
+    - Discord channel
+    - Webhook endoint
+    - Healthcheck endpoint
+    - MongoDB
 
-- Discord Bot
-  - Configured to post drone build updates in a specific channel
-  - Not public, sense configured with a specific Drone instance and Discord server. However, a user may clone/fork or do whatever to deploy on their own system's if so desired
+- Client (Websocket Connection)
   - Use [discord.py](https://pypi.org/project/discord.py/)
     - [Hearbeating](https://discord.com/developers/docs/topics/gateway#heartbeating) to display online/offline status
     - Periodically checks if HTTP Server is healthy
+  - Configuration
+    - Discord bot token
+    - Healthcheck URL
 
 - Logic
   - Create a new message on every new drone build
