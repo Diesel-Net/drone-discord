@@ -1,12 +1,13 @@
 [![Build Status](https://drone.kiwi-labs.net/api/badges/Diesel-Net/drone-discord/status.svg)](https://drone.kiwi-labs.net/Diesel-Net/drone-discord)
 
 # drone-discord
+#### **Summary**
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A solution for posting Drone CI's build logs to Discord. 
 Comprising of 2 small main components, calling this a _bot_ seems like a bit of a stretch. 
 It's more like a glorified logger with the ability to be modified or extended to support other communication platforms (like Slack).
 
 #### **Why?**
-A drone server can [easily be configured](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) to post all of it's events to an HTTP endoint of your choosing. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A drone server can [easily be configured](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) to post all of it's events to an HTTP endoint of your choosing. 
 Just knowing that fact made Discord's low-effort webhooks solution (similar to the Drone's official GitHub integration) very tempting. 
 It would have done the job just fine, however this was limited to only being able to create new messages. I specifically wanted the ability to update existing messages as well.
 
