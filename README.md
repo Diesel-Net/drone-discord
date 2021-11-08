@@ -44,8 +44,8 @@ It might be worth point out that this service is currently leveraging [`discord.
 
 - Client (Websocket Connection)
   - Use [discord.py](https://pypi.org/project/discord.py/)
-    - [Hearbeating](https://discord.com/developers/docs/topics/gateway#heartbeating) to display online/offline status
-    - Periodically checks if HTTP Server is healthy
+    - Leverages [hearbeating](https://discord.com/developers/docs/topics/gateway#heartbeating) to display online/offline status
+  - Periodically checks if HTTP Server is healthy
   - Configuration
     - Discord bot token
     - Healthcheck URL
@@ -62,7 +62,7 @@ It might be worth point out that this service is currently leveraging [`discord.
     - "Build failure"
       - Red
       - Red X emoji?
-  - Other metadata to embed?
+  - Other metadata/fields to embed?
     - repo name
     - build number
     - version (branch, tag, commit)
