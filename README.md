@@ -4,7 +4,7 @@
 A solution for posting Drone CI Server's build logs to Discord. 
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. It's more like a logger. A drone server can easily be configured to post all of it's events to the url of your choosing. Just knowing that made Discord's low-effort Channel webhooks solution (similar to the Drone's official GitHub integration) very tempting, 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. It's more like a logger. A drone server can easily be configured to post all of it's events to the url of your choosing. Just knowing that made Discord's low-effort Channel webhooks solution (similar to the Drone's official GitHub integration) very tempting, 
 which would have done the job just fine, however I wanted to ability to edit existing messages as well as creating new messages.
 The main (and only necessary) component that does all the work, is a very tiny Rest API (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is then used to log the events nicely in the configured channel.
 For the other piece, there is some minimal code hacked together with the soul purpose of connecting to the Gateway (WebSocket) API for being able to accuratley reflect the bot user's _Online_ status. This process periodically checks-in on the Rest API to make sure it's healthy and adjusts the bot user's online presence accordingly.
@@ -12,7 +12,7 @@ It might be worth point out that this part of the project is currently leveragin
 
 
 ## Deployment
-Deployed on docker swarm, automated with Ansible and Drone CI of course! A convenience script is provided to deploy manually, if needed.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone CI of course! A convenience script is provided to deploy manually, if needed.
 ```bash
 source deploy.sh
 ```
