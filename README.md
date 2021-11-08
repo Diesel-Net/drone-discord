@@ -121,3 +121,9 @@ You should be able to use one `.env` file for both components locally and this f
    ```bash
    python client.py
    ```
+
+#### Drone Events
+There should be a collection of test curls in the root of this repository. These are useful for simulating drone events when running locally.
+```bash
+source test_curl.sh
+```
