@@ -1,6 +1,6 @@
-venv
 .env
-flask-venv
+venv
+api-venv
 *.egg-info*
 **.pyc
 __pycache__

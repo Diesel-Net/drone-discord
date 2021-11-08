@@ -86,7 +86,7 @@ The other main piece is a minimal Flask App for receiving the webhook events fro
    pip insall -r api-requirements.txt
    ```
    ```bash
-   python3 -m venv flask-venv
-   source flask-venv/bin/activate
-   pip install -e .
+   python3 -m venv api-venv
+   source api-venv/bin/activate
+   
    ```
