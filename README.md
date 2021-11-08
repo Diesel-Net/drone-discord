@@ -18,6 +18,11 @@ It would have done the job just fine, however this was limited to only being abl
 It might be worth pointing out that this service is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is no longer being maintained, however I am confident that this _should_ still work for quite some time until Discord's Gateway API changes dramatically, for any reason.
 
 
+## Requirements
+- docker
+- ansible-core 2.12+
+- Python 3.9+
+
 
 ## Implementation Notes
 
