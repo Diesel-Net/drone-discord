@@ -84,7 +84,7 @@ source deploy.sh
 
 ## Run it locally
 
-#### Bot
+#### Websocket Client
 1. Create Python Virtual Environment and activate it
    ```bash
    python3 -m venv venv
@@ -93,7 +93,7 @@ source deploy.sh
 
 2. Install python depenencies
    ```bash
-   pip insall -r bot-requirements.txt
+   pip install -r client-requirements.txt
    ```
 
 3. TODO...
@@ -108,7 +108,7 @@ source deploy.sh
 
 2. Install python depenencies
    ```bash
-   pip insall -r api-requirements.txt
+   pip install -r server-requirements.txt
    ```
    ```bash
    python3 -m venv api-venv
