@@ -75,7 +75,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
 
 
 ## Deployment
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone of course! 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone of course! 
 A convenience script is provided to invoke the ansible playbook manually if needed. You will need to ensure a proper SSH configuration and have an Ansible vault password set. Please see [deploy.sh](deploy.sh) for hints.
 ```bash
 source deploy.sh
@@ -84,8 +84,8 @@ source deploy.sh
 
 
 ## Run it locally
-You will need a valid `.env` containing the necessary key/value pairs for configuration. 
-You should be able to use one `.env` file for both components locally.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. 
+You should be able to use one `.env` file for both components locally and this file should be added to .gitignore to prevent accidentally committing any secrets.
 
 
 #### Websocket Client
