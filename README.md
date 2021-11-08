@@ -4,11 +4,12 @@
 Discord bot for posting a Drone CI Server's build logs to a Discord channel. 
 This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. 
 A drone server can easily be configured to post all of it's events to the url of your choosing. 
-I contemplated using the low-effort webhooks solution (similar to the official GitHub integration), 
-which would have done decently, however I wanted to ability to not just create new messages but update a existing messages as well.
-There is some minimal code hacked together for connecting to the Gateway (WebSocket) API with the soul purpose of being able to accuratley reflect the bot user's _Online_ status. 
-It is worth point out that I am currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is no longer being maintained, however this _should_ work for quite awhile unless the core Gateway API systems change dramatically in the future, for any reason.
-The other main piece to this, and the component that does all the work, is a minimal HTTP Server (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is used made to log the events nicely in the configured channel.
+We contemplated using the low-effort webhooks solution (similar to the official GitHub integration), 
+which would have done the job decently, however I wanted to ability to not just create new messages but update existing messages as well.
+The main (and only necessary) component that does all the work, is a very tiny Rest API (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is then used to log the events nicely in the configured channel.
+For the other piece, there is some minimal code hacked together with the soul purpose of connecting to the Gateway (WebSocket) API for being able to accuratley reflect the bot user's _Online_ status. This process periodically checks-in on the Rest API to make sure it's healthy and adjusts the bot user's online presence accordingly.
+It might be worth point out that this part of the project is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is no longer being maintained, however I am confident that this _should_ work for quite some time until Discord's Gateway API changes dramatically, for any reason.
+
 
 ## Deployment
 Deployed on docker swarm, automated with Ansible and Drone CI of course! A convenience script is provided to deploy manually, if needed.
