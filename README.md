@@ -2,6 +2,8 @@
 
 # drone-discord
 Discord bot for posting a Drone CI Server's build logs to a Discord channel. 
+
+
 This bot is comprised of 2 main components and even calling it a _bot_ is a bit of a stretch. 
 A drone server can easily be configured to post all of it's events to the url of your choosing. 
 We contemplated using the low-effort webhooks solution (similar to the official GitHub integration), 
