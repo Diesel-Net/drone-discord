@@ -24,9 +24,8 @@ class Client(discord.Client):
 
     async def healthcheck(self):
         await self.wait_until_ready()
-        await asyncio.sleep(2)
         while not self.is_closed():             
-            if not is_healthy():
+            if not is_server_healthy():
                 print('Closing connection.')
                 await self.close()
             await asyncio.sleep(HEALTHCHECK_INTERVAL)
