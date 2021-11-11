@@ -1,5 +1,4 @@
-FROM python:3.8-slim
-# TODO: update to python version 3.9
+FROM python:3.9
 
 # Upgrade pip and setuptools
 RUN pip3 install --upgrade pip \
@@ -14,17 +13,17 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
 # Source code
-COPY setup.py .
+COPY server-requirements.txt .
 COPY README.md .
 COPY api/ api/
-
-# Install package with 'test' extras from setup.py
-RUN pip3 install -e . 
 
 # WSGI integration (production quality server)
 COPY wsgi.py wsgi.py
 COPY gunicorn.py gunicorn.py
-RUN pip3 install gunicorn
+RUN pip3 install gunicorn==20.1.0
+
+# Install package with 'test' extras from setup.py
+RUN pip3 install -r server-requirements.txt
 
 # Expose the flask port
 EXPOSE 5000
