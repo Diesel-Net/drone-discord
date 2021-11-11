@@ -92,6 +92,20 @@ source deploy.sh
 ## Run it Locally
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. This file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. 
 
+```
+# .env
+DISCORD_TOKEN=secret-token
+
+MONGO_DATABASE=drone-discord
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_INITDB_ROOT_USERNAME=root
+MONGO_INITDB_ROOT_PASSWORD=secret-password
+
+HEALTHCHECK_INTERVAL=10
+
+```
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each of the components below needs to executed in their own terminal window, as they are using blocking calls while running inside isolated python virtual environments.
 
 #### MongoDB
