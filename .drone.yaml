@@ -1,14 +1,14 @@
 ---
 kind: pipeline
 type: docker
-name: Drone - Discord Bot (Test)
+name: Drone - Discord Bot (Development)
 
 clone:
   depth: 1
 
 steps:
 
-  - name: docker build & push (test)
+  - name: docker build & push
     image: plugins/docker
     settings:
       mirror: dockerhub.nexus.diesel.net
@@ -19,27 +19,11 @@ steps:
         from_secret: nexus_pass
       repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}
       tags:
-        - test-latest
-
-
-  - name: deploy
-    image: plugins/ansible:3
-    environment:
-      ANSIBLE_CONFIG: .ansible/ansible.cfg
-      DISCORD_TOKEN:
-        from_secret: discord_token_prod
-    settings:
-      inventory: .ansible/inventory/test
-      galaxy: .ansible/roles/requirements.yaml
-      playbook: .ansible/deploy.yaml
-      extra_vars: version=test
-      private_key:
-        from_secret: automation_id_rsa
-
+        - ${DRONE_BRANCH}-latest
 
 trigger:
   branch:
-    - test
+    - development
   event:
     - push
 
