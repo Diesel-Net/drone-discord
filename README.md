@@ -32,6 +32,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
       - HTTP GET
       - Used by both docker and the client service
   - Data persistence
+    - Discord events states?
     - Discord message ID's
     - Use [`PyMongo`](https://pymongo.readthedocs.io/en/stable/) to talk to MongoDB instance
   - Configuration
