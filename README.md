@@ -72,10 +72,12 @@ It might be worth pointing out that this service is currently leveraging [`disco
     - others?
 
 
-## Requirements
-- Python 3.9+
-- Ansible-Core 2.12+
-- Docker-Engine 20.10.8+
+## Technologies used
+- Python 3.9.7
+- Ansible 4.6.0
+- Ansible-Core 2.11.5
+- Docker-Engine 20.10.8
+- Docker-CLI 20.10.8
 
 
 ## Deployment
@@ -87,14 +89,29 @@ source deploy.sh
 
 
 ## Run it locally
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need Python3 and docker installed. a valid `.env` containing the necessary key/value pairs for configuration. 
 You should be able to use one `.env` file for both components locally and this file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. Each of these components need to executed from different shells, as they have isolated python virtual environments.
 
 
 #### MongoDB
-1. Start a quick and dirty MongoDB Server using docker
+1. Create Python Virtual Environment and activate it
    ```bash
-   TODO...
+   python3 -m venv mongo-venv && source mongo-venv/bin/activate
+   ```
+
+2. install python dependencies
+   ```bash
+   pip install "python-dotenv[cli]"
+   ````
+
+2. Start MongoDB Server with docker.
+   ```bash
+   dotenv run \
+     docker run \
+      -p 27017:27017 \
+      -e MONGO_INITDB_ROOT_USERNAME \
+      -e MONGO_INITDB_ROOT_PASSWORD \
+      mongo
    ```
 
 #### HTTP Server
@@ -108,7 +125,7 @@ You should be able to use one `.env` file for both components locally and this f
    pip install -r server-requirements.txt
    ```
 
-3. Start the Flask Development Server.
+3. Start Flask Development Server.
    ```bash
    flask run
    ```
@@ -125,7 +142,7 @@ You should be able to use one `.env` file for both components locally and this f
    pip install -r client-requirements.txt
    ```
 
-3. Connect the client to Discord.
+3. Start Discord client.
    ```bash
    python client.py
    ```

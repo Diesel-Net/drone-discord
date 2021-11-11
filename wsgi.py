@@ -14,5 +14,8 @@ https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery
 """
 
 import api
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = api.create_app()

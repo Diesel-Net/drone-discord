@@ -2,13 +2,13 @@ import requests
 import hashlib
 import hmac
 from flask import Blueprint, request
-from api.database import get_db
+from api.mongo import get_db
 from base64 import b64encode
 
-bp = Blueprint('log', __name__, url_prefix='')
+receive_events = Blueprint('receive-events', __name__, url_prefix='')
 
 def calculate_signature(key, signing_string):
-    # drone signatures are calulcated using hmac sha256
+    # drone signatures are calculated using hmac sha256
     return hmac.new(key, signing_string, hashlib.sha256).digest()
 
 
@@ -36,7 +36,7 @@ def verify_signature(key):
     return hmac.compare_digest(expected, calculated)
 
 
-@bp.route('/', methods=['POST'])
-def log():
-
-    return {}, 200
+@receive_events.route('/', methods=['POST', 'GET'])
+def receive():
+    if request.method == 'GET':
+        return 'Hello, World!', 200

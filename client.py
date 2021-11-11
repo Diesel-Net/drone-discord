@@ -7,6 +7,7 @@ from random import getrandbits
 
 
 load_dotenv()
+
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 HEALTHCHECK_INTERVAL = int(os.getenv('HEALTHCHECK_INTERVAL'))
 

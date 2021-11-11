@@ -15,19 +15,19 @@ def get_db():
     again.
     """
     if "db" not in g:
-
         g.client = MongoClient(
-            host=os.getenv('DATABASE_HOST'), 
-            port=os.getenv('DATABASE_PORT'), 
-            username=os.getenv('DATABASE_USERNAME'), 
-            password=os.getenv('DATABASE_PASSWORD'), 
+            host=os.getenv('MONGO_HOST'), 
+            port=int(os.getenv('MONGO_PORT')), 
+            username=os.getenv('MONGO_INITDB_ROOT_USERNAME'), 
+            password=os.getenv('MONGO_INITDB_ROOT_PASSWORD'), 
         )
-
-        g.db = g.client[os.getenv('DATABASE')]
+        g.db = g.client[os.getenv('MONGO_DATABASE')]
         g.fs = GridFS(g.db)
-        
-        print(f"Database opened ({ os.getenv('DATABASE_HOST') }:{ os.getenv('DATABASE_PORT') })")
-
+        print(
+            f"Connecting to `{os.getenv('MONGO_DATABASE')}`"
+            f" at ({ os.getenv('MONGO_HOST') }"
+            f":{ os.getenv('MONGO_PORT') })"
+        )
     return g.db
 
 
@@ -38,18 +38,14 @@ def close_db(e=None):
     if 'db' in g:
         db = g.pop("db", None)
         client = g.pop("client", None)
-
         print('Database closed')
 
 
 def init_db(data=None):
     """Create new database file and optionally pre-load json data."""
-
     get_db()
-    g.client.drop_database(os.getenv('DATABASE'))
+    g.client.drop_database(os.getenv('MONGO_DATABASE'))
     db = get_db()
-
-    
     if data != None:
         for key in  data:
             # create collections as defined as "keys" in top level json object
@@ -67,15 +63,12 @@ def init_db_command(filename=None):
     else:
         with open(filename, "rb") as fh:
             init_db(json_util.loads(fh.read()))
-            
-    #click.echo("Database initialized")
     print('Database initialized')
 
 
-def register(app):
+def register_db(app):
     """Register database functions with the Flask app. This is called by
     the application factory.
     """
-
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)

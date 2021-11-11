@@ -1,6 +1,6 @@
 from flask import Flask
-from api.endpoints import log
-from api import database
+from api.drone import receive_events
+from api.mongo import register_db
 
 # we want the configuration passed in as a parameter here so that we
 # can easily change the configuration during runtime, e.g. for unit tests
@@ -10,9 +10,9 @@ def create_app():
     app = Flask(__name__)
 
     # register the database cli commands
-    database.register(app)
+    register_db(app)
 
     # import/register endpoints
-    app.register_blueprint(log.bp)
+    app.register_blueprint(receive_events)
 
     return app
