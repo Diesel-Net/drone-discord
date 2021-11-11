@@ -39,4 +39,10 @@ def verify_signature(key):
 @receive_events.route('/', methods=['POST', 'GET'])
 def receive():
     if request.method == 'GET':
+        get_db().test.insert_one(
+            {
+                'hello': 'world',
+            }
+        )
+        
         return 'Hello, World!', 200

@@ -119,7 +119,7 @@ HEALTHCHECK_INTERVAL=10
    pip install "python-dotenv[cli]"
    ````
 
-2. Start MongoDB Server with docker.
+2. Start MongoDB container.
    ```bash
    dotenv run \
      docker run \
