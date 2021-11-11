@@ -32,7 +32,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
       - HTTP GET
       - Used by both docker and the client service
   - Data persistence
-    - Discord events states?
+    - Drone events states?
     - Discord message ID's
     - Use [`PyMongo`](https://pymongo.readthedocs.io/en/stable/) to talk to MongoDB instance
   - Configuration
@@ -90,7 +90,7 @@ source deploy.sh
 
 
 ## Run it Locally
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. This file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. Each of these components need to executed from different shells, as they have isolated python virtual environments.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. This file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. **Each of the components need to executed in their own shells**, as they are all blocking calls running in isolated python virtual environments.
 
 
 #### MongoDB
