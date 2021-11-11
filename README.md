@@ -72,7 +72,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
     - others?
 
 
-## Technologies used
+## Toolchain Versions
 - Python 3.9.7
 - Ansible 4.6.0
 - Ansible-Core 2.11.5
@@ -80,7 +80,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
 - Docker-CLI 20.10.8
 
 
-## Deployment
+## Deployments
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone of course! 
 A convenience script is provided to invoke the ansible playbook manually if needed. You will need to ensure a proper SSH configuration and have an Ansible vault password set. Please see [deploy.sh](deploy.sh) for hints.
 ```bash
@@ -88,7 +88,7 @@ source deploy.sh
 ```
 
 
-## Run it locally
+## Run it Locally
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need Python3 and docker installed. a valid `.env` containing the necessary key/value pairs for configuration. 
 You should be able to use one `.env` file for both components locally and this file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. Each of these components need to executed from different shells, as they have isolated python virtual environments.
 
