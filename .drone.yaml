@@ -14,6 +14,7 @@ steps:
       dockerfile: server.Dockerfile
       mirror: dockerhub.nexus.diesel.net
       registry: docker.nexus.diesel.net
+      purge: no
       username:
         from_secret: nexus_user
       password:
@@ -46,6 +47,7 @@ steps:
       dockerfile: client.Dockerfile
       mirror: dockerhub.nexus.diesel.net
       registry: docker.nexus.diesel.net
+      purge: no
       username:
         from_secret: nexus_user
       password:
