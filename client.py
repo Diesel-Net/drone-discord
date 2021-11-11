@@ -1,6 +1,7 @@
 import os
 import asyncio
 import discord
+import requests
 from dotenv import load_dotenv
 from time import sleep
 from random import getrandbits
@@ -10,7 +11,7 @@ load_dotenv()
 
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 HEALTHCHECK_INTERVAL = int(os.getenv('HEALTHCHECK_INTERVAL'))
-
+HEALTHCHECK_URL = os.getenv('HEALTHCHECK_URL')
 
 class Client(discord.Client):
     def __init__(self):
@@ -34,9 +35,14 @@ class Client(discord.Client):
 
 def is_server_healthy():
     # TODO: Add real api healthcheck here
-    healthy = bool(getrandbits(1))
-    print(f"Healthy? { 'yes' if healthy else 'no' }")
-    return healthy
+    response = requests.get(
+        url = HEALTHCHECK_URL,
+    )
+    if response.status_code == 200:
+        print('Healthcheck: success')
+        return True
+    print('Healthcheck: failure')
+    return False
 
 
 if __name__ == '__main__':

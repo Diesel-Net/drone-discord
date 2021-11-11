@@ -143,10 +143,10 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    flask run
    ```
 
-  You may reset the development database at any time with:
-  ```bash
-  flask init-db
-  ````
+   You may choose to reset the development database at any time.
+   ```bash
+   flask init-db
+   ````
 
 
 #### Websocket Client

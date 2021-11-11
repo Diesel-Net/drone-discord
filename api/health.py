@@ -14,6 +14,7 @@ def healthy():
         'msg': 'healthcheck',
         'userAgent': user_agent,
     }
+    print(ping)
     get_db().health.insert_one(ping)
     pong = get_db().health.find_one({'timestamp': timestamp})
     return { 'status': 'Healthy',
