@@ -8,7 +8,7 @@ clone:
 
 steps:
 
-  - name: docker build
+  - name: docker build and push
     image: plugins/docker
     settings:
       dockerfile: server.Dockerfile
@@ -40,7 +40,7 @@ clone:
 
 steps:
 
-  - name: docker build
+  - name: docker build and push
     image: plugins/docker
     settings:
       dockerfile: client.Dockerfile
@@ -71,7 +71,7 @@ clone:
 
 steps:
 
-  - name: deploy
+  - name: deploy (docker swarm)
     image: plugins/ansible:3
     environment:
       ANSIBLE_CONFIG: .ansible/ansible.cfg
