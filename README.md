@@ -143,6 +143,11 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    flask run
    ```
 
+  You may reset the development database at any time with:
+  ```bash
+  flask init-db
+  ````
+
 
 #### Websocket Client
 1. Create Python Virtual Environment and activate it

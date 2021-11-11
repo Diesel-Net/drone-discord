@@ -5,7 +5,7 @@ from flask import Blueprint, request
 from api.mongo import get_db
 from base64 import b64encode
 
-receive_events = Blueprint('receive-events', __name__, url_prefix='')
+drone_events = Blueprint('receive-events', __name__, url_prefix='')
 
 def calculate_signature(key, signing_string):
     # drone signatures are calculated using hmac sha256
@@ -36,7 +36,7 @@ def verify_signature(key):
     return hmac.compare_digest(expected, calculated)
 
 
-@receive_events.route('/', methods=['POST', 'GET'])
+@drone_events.route('/', methods=['POST', 'GET'])
 def receive():
     if request.method == 'GET':
         get_db().test.insert_one(
