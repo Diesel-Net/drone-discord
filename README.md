@@ -73,7 +73,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
     - others?
 
 
-## Toolchain Versions
+## Toolchain
 - Python 3.9.7
 - Ansible 4.6.0
 - Ansible-Core 2.11.5
@@ -90,8 +90,9 @@ source deploy.sh
 
 
 ## Run it Locally
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. This file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. **Each of the components need to executed in their own shells**, as they are all blocking calls running in isolated python virtual environments.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. This file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. 
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each of the components below needs to executed in their own terminal window, as they are using blocking calls while running inside isolated python virtual environments.
 
 #### MongoDB
 1. Create Python Virtual Environment and activate it
