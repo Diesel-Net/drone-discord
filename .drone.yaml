@@ -1,56 +1,75 @@
 ---
 kind: pipeline
 type: docker
-name: Drone - Discord Bot (Development)
+name: Build Server
 
 clone:
   depth: 1
 
 steps:
 
-  - name: docker build & push
+  - name: docker build
     image: plugins/docker
     settings:
+      dockerfile: server.Dockerfile
       mirror: dockerhub.nexus.diesel.net
       registry: docker.nexus.diesel.net
       username:
         from_secret: nexus_user
       password:
         from_secret: nexus_pass
-      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}
+      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-server
       tags:
         - ${DRONE_BRANCH}-latest
 
 trigger:
   branch:
     - development
+    - stable
   event:
     - push
 
 ---
+
 kind: pipeline
 type: docker
-name: Drone - Discord Bot (Production)
+name: Build Client
 
 clone:
   depth: 1
 
 steps:
 
-  - name: docker build & push (production)
+  - name: docker build
     image: plugins/docker
     settings:
+      dockerfile: client.Dockerfile
       mirror: dockerhub.nexus.diesel.net
       registry: docker.nexus.diesel.net
       username:
         from_secret: nexus_user
       password:
         from_secret: nexus_pass
-      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}
+      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-client
       tags:
-        - prod-latest
-        - prod-${DRONE_BUILD_NUMBER}
+        - ${DRONE_BRANCH}-latest
 
+trigger:
+  branch:
+    - development
+    - stable
+  event:
+    - push
+
+---
+kind: pipeline
+type: docker
+name: Deploy
+
+clone:
+  depth: 1
+
+steps:
 
   - name: deploy
     image: plugins/ansible:3
@@ -59,13 +78,11 @@ steps:
       DISCORD_TOKEN:
         from_secret: discord_token_prod
     settings:
-      inventory: .ansible/inventory/prod
+      inventory: .ansible/inventory/stable
       galaxy: .ansible/roles/requirements.yaml
       playbook: .ansible/deploy.yaml
-      extra_vars: version=prod
       private_key:
         from_secret: automation_id_rsa
-
 
 trigger:
   branch:
