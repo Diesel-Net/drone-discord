@@ -89,8 +89,7 @@ source deploy.sh
 
 
 ## Run it Locally
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need Python3 and docker installed. a valid `.env` containing the necessary key/value pairs for configuration. 
-You should be able to use one `.env` file for both components locally and this file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. Each of these components need to executed from different shells, as they have isolated python virtual environments.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You will need a valid `.env` containing the necessary key/value pairs for configuration. This file should be added to .gitignore to prevent accidentally committing any secrets. Please read more about [`python-dotenv`](https://pypi.org/project/python-dotenv/) if you are unfamiliar with the syntax. Each of these components need to executed from different shells, as they have isolated python virtual environments.
 
 
 #### MongoDB
