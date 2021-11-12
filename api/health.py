@@ -6,7 +6,7 @@ health_check = Blueprint('health-check', __name__, url_prefix='')
 
 
 @health_check.route('/health', methods=['GET'])
-def healthy():
+def get_health():
     user_agent = request.headers['User-Agent']
     timestamp = datetime.utcnow()
     ping = {

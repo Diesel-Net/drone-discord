@@ -34,11 +34,18 @@ class Client(discord.Client):
 
 
 def is_server_healthy():
-    if requests.get(HEALTHCHECK_URL).status_code != 200:
-        print('Healthcheck: failure')
-        return False
-    print('Healthcheck: success')
-    return True
+    try:
+        response = requests.get(
+            url = HEALTHCHECK_URL,
+            timeout = HEALTHCHECK_INTERVAL/2,
+        )
+        if response.status_code == 200:
+            print('Healthcheck: success')
+            return True
+    except Exception as ex:
+        print(ex)
+    print('Healthcheck: failure')
+    return False
 
 
 if __name__ == '__main__':

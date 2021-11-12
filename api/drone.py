@@ -36,13 +36,12 @@ def verify_signature(key):
     return hmac.compare_digest(expected, calculated)
 
 
-@drone_events.route('/', methods=['POST', 'GET'])
-def receive():
-    if request.method == 'GET':
-        get_db().test.insert_one(
-            {
-                'hello': 'world',
-            }
-        )
-        
-        return 'Hello, World!', 200
+@drone_events.route('/', methods=['POST'])
+def post_events():
+    get_db().drone.insert_one(
+        {
+            'hello': 'world',
+        }
+    )
+    
+    return 'Hello, World!', 200

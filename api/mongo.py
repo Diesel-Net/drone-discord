@@ -24,7 +24,7 @@ def get_db():
         g.db = g.client[os.getenv('MONGO_DATABASE')]
         g.fs = GridFS(g.db)
         print(
-            f"Connecting to `{os.getenv('MONGO_DATABASE')}`"
+            f"Mongo: Connecting to `{os.getenv('MONGO_DATABASE')}`"
             f" at ({ os.getenv('MONGO_HOST') }"
             f":{ os.getenv('MONGO_PORT') })"
         )
@@ -38,7 +38,7 @@ def close_db(e=None):
     if 'db' in g:
         db = g.pop("db", None)
         client = g.pop("client", None)
-        print('Database closed')
+        print('Mongo: Database closed')
 
 
 def init_db(data=None):
@@ -63,7 +63,7 @@ def init_db_command(filename=None):
     else:
         with open(filename, "rb") as fh:
             init_db(json_util.loads(fh.read()))
-    print('Database initialized')
+    print('Mongo: Database initialized')
 
 
 def register_db(app):
