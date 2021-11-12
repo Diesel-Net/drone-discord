@@ -10,10 +10,10 @@ def create_app():
 
     app = Flask(__name__)
 
-    # register the database cli commands
+    # register the database and it's cli commands
     register_db(app)
 
-    # import/register endpoints
+    # register listening endpoints
     app.register_blueprint(drone_events)
     app.register_blueprint(health_check)
 
