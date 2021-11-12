@@ -25,7 +25,7 @@ services:
       labels:
         - traefik.enable=true
         - traefik.http.services.{{ repository }}.loadbalancer.server.port=5000
-        - traefik.http.routers.{{ repository }}.rule=Host(`{{ host }}`) && PathPrefix(`{{ base_path }}`)
+        - traefik.http.routers.{{ repository }}.rule=Host(`{{ server_host }}`) && PathPrefix(`{{ server_base_path }}`)
         #- traefik.http.middlewares.{{ repository }}-strip.stripprefix.prefixes={{ base_path }}
         #- traefik.http.routers.{{ repository }}.middlewares={{ repository }}-strip@docker
     environment:
