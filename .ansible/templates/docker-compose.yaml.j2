@@ -53,6 +53,7 @@ services:
           - '{{ mongo_host }}'
 
 networks:
+  mongo_net:
   {{ docker_network }}:
     external:
       name: {{ docker_network }}
