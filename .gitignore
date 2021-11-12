@@ -4,3 +4,5 @@ venv
 *.egg-info*
 **.pyc
 __pycache__
+.ansible/roles/common
+.ansible/roles/docker
