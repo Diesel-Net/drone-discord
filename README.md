@@ -82,7 +82,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
 
 
 ## Deployments
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, automated with Ansible and Drone of course! 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm node, and automated using Drone with Ansible.
 A convenience script is provided to invoke the ansible playbook manually if needed. You will need to ensure a proper SSH configuration and have an Ansible vault password set. Please see [deploy.sh](deploy.sh) for hints.
 ```bash
 source deploy.sh
