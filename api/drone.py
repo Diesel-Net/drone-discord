@@ -1,6 +1,7 @@
 import requests
 import hashlib
 import hmac
+import json
 from flask import Blueprint, request
 from api.mongo import get_db
 from base64 import b64encode
@@ -38,11 +39,12 @@ def verify_signature(key):
 
 @drone_events.route('/', methods=['POST'])
 def post_events():
-    print(request.headers)
-    print(request.args)
-    print(request.json)
+    print(f'Headers: { json.dumps(request.headers, indent=2) }')
+    print(f'QueryParams: { json.dumps(request.args, indent=2) }')
+    print(f'JSON: { json.dumps(request.json, indent=2) }')
+    #print(json.dumps(request.json, indent=2))
 
-    
+
     # get_db().drone.insert_one(
     #     {
     #         'hello': 'world',
