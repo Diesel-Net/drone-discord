@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import multiprocessing
 
 bind = "0.0.0.0:5000"
