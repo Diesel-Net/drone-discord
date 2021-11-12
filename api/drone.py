@@ -39,8 +39,8 @@ def verify_signature(key):
 
 @drone_events.route('/', methods=['POST'])
 def post_events():
-    print(f'Headers: { json.dumps(request.headers, indent=2) }')
-    print(f'QueryParams: { json.dumps(request.args, indent=2) }')
+    print(f'Headers: { request.headers }')
+    print(f'QueryParams: { request.args }')
     print(f'JSON: { json.dumps(request.json, indent=2) }')
     #print(json.dumps(request.json, indent=2))
 
