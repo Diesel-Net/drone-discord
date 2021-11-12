@@ -34,15 +34,11 @@ class Client(discord.Client):
 
 
 def is_server_healthy():
-    # TODO: Add real api healthcheck here
-    response = requests.get(
-        url = HEALTHCHECK_URL,
-    )
-    if response.status_code == 200:
-        print('Healthcheck: success')
-        return True
-    print('Healthcheck: failure')
-    return False
+    if requests.get(HEALTHCHECK_URL).status_code != 200:
+        print('Healthcheck: failure')
+        return False
+    print('Healthcheck: success')
+    return True
 
 
 if __name__ == '__main__':
