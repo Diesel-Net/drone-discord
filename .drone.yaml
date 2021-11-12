@@ -78,7 +78,7 @@ steps:
     environment:
       ANSIBLE_CONFIG: .ansible/ansible.cfg
       DISCORD_TOKEN:
-        from_secret: discord_token_prod
+        from_secret: discord_token
     settings:
       inventory: .ansible/inventory/stable
       galaxy: .ansible/roles/requirements.yaml
