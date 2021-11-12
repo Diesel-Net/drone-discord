@@ -1,0 +1,1 @@
+discord_token: '{{ lookup("env", "DISCORD_TOKEN") }}'
