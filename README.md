@@ -96,7 +96,7 @@ source deploy.sh
 # .env
 DISCORD_TOKEN=secret-token
 HEALTHCHECK_INTERVAL=10
-HEALTHCHECK_URL=http://localhost:5000/api/health
+HEALTHCHECK_URL=http://localhost:5000/health
 
 MONGO_DATABASE=drone-discord
 MONGO_HOST=localhost
@@ -106,7 +106,6 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
 
 SERVER_SCHEME=http://
 SERVER_HOST=localhost:5000
-SERVER_BASE_PATH=/api
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each of the components below needs to executed in their own terminal window, as they are using blocking calls while running inside isolated python virtual environments.

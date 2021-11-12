@@ -25,9 +25,7 @@ services:
       labels:
         - traefik.enable=true
         - traefik.http.services.{{ repository }}.loadbalancer.server.port=5000
-        - traefik.http.routers.{{ repository }}.rule=Host(`{{ server_host }}`) && PathPrefix(`{{ server_base_path }}`)
-        #- traefik.http.middlewares.{{ repository }}-strip.stripprefix.prefixes={{ server_base_path }}
-        #- traefik.http.routers.{{ repository }}.middlewares={{ repository }}-strip@docker
+        - traefik.http.routers.{{ repository }}.rule=Host(`{{ server_host }}`)
     environment:
       REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
