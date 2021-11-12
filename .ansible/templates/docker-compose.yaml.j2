@@ -45,8 +45,8 @@ services:
       - {{ data_dir }}:/data/db
       - {{ ssl_cert_file }}:/etc/ssl/certs/ca-certificates.crt
     environment:
-      MONGO_INITDB_ROOT_USERNAME: '{{ mongo_username }}'
-      MONGO_INITDB_ROOT_PASSWORD: '{{ mongo_password }}'
+      MONGO_INITDB_ROOT_USERNAME: '{{ mongo_initdb_root_username }}'
+      MONGO_INITDB_ROOT_PASSWORD: '{{ mongo_initdb_root_password }}'
     networks:
       mongo_net:
         aliases:
