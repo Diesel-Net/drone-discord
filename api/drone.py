@@ -38,10 +38,15 @@ def verify_signature(key):
 
 @drone_events.route('/', methods=['POST'])
 def post_events():
-    get_db().drone.insert_one(
-        {
-            'hello': 'world',
-        }
-    )
+    print(request.headers)
+    print(request.args)
+    print(request.json)
+
+    
+    # get_db().drone.insert_one(
+    #     {
+    #         'hello': 'world',
+    #     }
+    # )
     
     return 'Hello, World!', 200
