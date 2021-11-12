@@ -73,12 +73,20 @@ clone:
 
 steps:
 
-  - name: deploy (docker swarm)
+  - name: configure and deploy (docker swarm)
     image: plugins/ansible:3
     environment:
       ANSIBLE_CONFIG: .ansible/ansible.cfg
       DISCORD_TOKEN:
         from_secret: discord_token
+      HEALTHCHECK_URL:
+        from_secret: healthcheck_url
+      MONGO_PORT_EXPOSED:
+        from_secret: mongo_port_exposed
+      MONGO_INITDB_ROOT_USERNAME:
+        from_secret: mongo_initdb_root_username
+      MONGO_INITDB_ROOT_PASSWORD:
+        from_secret: mongo_initdb_root_password
     settings:
       inventory: .ansible/inventory/stable
       galaxy: .ansible/roles/requirements.yaml
@@ -88,6 +96,7 @@ steps:
 
 trigger:
   branch:
+    - development
     - stable
   event:
     - push
