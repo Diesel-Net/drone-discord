@@ -21,12 +21,20 @@ services:
     image: {{ docker_registry }}/{{ repository }}-server:{{ version }}-latest
     volumes:
       - {{ ssl_cert_file }}:/etc/ssl/certs/ca-certificates.crt
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.http.services.{{ repository }}.loadbalancer.server.port=5000
+        - traefik.http.routers.{{ repository }}.rule=Host(`{{ host }}`) && PathPrefix(`{{ base_path }}`)
+        #- traefik.http.middlewares.{{ repository }}-strip.stripprefix.prefixes={{ base_path }}
+        #- traefik.http.routers.{{ repository }}.middlewares={{ repository }}-strip@docker
     environment:
       REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
       DISCORD_TOKEN: '{{ discord_token }}'
-      HEALTHCHECK_INTERVAL: {{ healthcheck_interval }}
-      HEALTHCHECK_URL: '{{ healthcheck_url }}'
+      SERVER_SCHEME: '{{ server_scheme }}'
+      SERVER_HOST: '{{ server_host }}'
+      SERVER_BASE_PATH: '{{ server_base_path }}'
       MONGO_DATABASE: '{{ mongo_database }}'
       MONGO_HOST: '{{ mongo_host }}'
       MONGO_PORT: {{ mongo_port }}

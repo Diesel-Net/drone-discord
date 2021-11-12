@@ -1,2 +1,2 @@
-healthcheck_url: '{{ lookup("env", "HEALTHCHECK_URL") }}'
+healthcheck_url: '{{ server_scheme }}{{ server_host }}{{ server_base_path }}/health'
 healthcheck_interval: 10 # seconds

@@ -1,0 +1,3 @@
+server_scheme: 'https://'
+server_host: '{{ lookup("env", "SERVER_HOST") }}'
+server_base_path: ''
