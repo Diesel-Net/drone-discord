@@ -1,5 +1,6 @@
 mongo_database: '{{ repository }}'
 mongo_host: '{{ repository+"_"+version+'_db' }}'
 mongo_port: 27017
-mongo_initdb_root_username: root
-mongo_initdb_root_password: '{{ lookup("env", "MONGO_PASSWORD") }}'
+mongo_port_exposed: '{{ lookup("env", "MONGO_PORT_EXPOSED") }}'
+mongo_initdb_root_username: '{{ lookup("env", "MONGO_INITDB_ROOT_USERNAME") }}'
+mongo_initdb_root_password: '{{ lookup("env", "MONGO_INITDB_ROOT_PASSWORD") }}'

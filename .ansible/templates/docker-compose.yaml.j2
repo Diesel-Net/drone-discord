@@ -1,0 +1,58 @@
+# docker-compose.yaml
+
+version: '3.8'
+services: 
+
+  client:
+    image: {{ docker_registry }}/{{ repository }}-client:{{ version }}-latest
+    volumes:
+      - {{ ssl_cert_file }}:/etc/ssl/certs/ca-certificates.crt
+    environment:
+      REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+      WEBSOCKET_CLIENT_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      DISCORD_TOKEN: '{{ discord_token }}'
+      HEALTHCHECK_INTERVAL: {{ healthcheck_interval }}
+      HEALTHCHECK_URL: '{{ healthcheck_url }}'
+    networks:
+      - {{ docker_network }}
+
+  server:
+    image: {{ docker_registry }}/{{ repository }}-server:{{ version }}-latest
+    volumes:
+      - {{ ssl_cert_file }}:/etc/ssl/certs/ca-certificates.crt
+    environment:
+      REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+      DISCORD_TOKEN: '{{ discord_token }}'
+      HEALTHCHECK_INTERVAL: {{ healthcheck_interval }}
+      HEALTHCHECK_URL: '{{ healthcheck_url }}'
+      MONGO_DATABASE: '{{ mongo_database }}'
+      MONGO_HOST: '{{ mongo_host }}'
+      MONGO_PORT: {{ mongo_port }}
+      MONGO_INITDB_ROOT_USERNAME: '{{ mongo_initdb_root_username }}'
+      MONGO_INITDB_ROOT_PASSWORD: '{{ mongo_initdb_root_password }}'
+    networks:
+      - {{ docker_network }}
+      - mongo_net
+
+  database:
+    image: mongo:4
+    command: mongod --port {{ mongo_port }}
+    ports:
+      - {{ mongo_port_exposed }}:{{ mongo_port }}
+    volumes: 
+      - {{ data_dir }}:/data/db
+      - {{ ssl_cert_file }}:/etc/ssl/certs/ca-certificates.crt
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: '{{ mongo_username }}'
+      MONGO_INITDB_ROOT_PASSWORD: '{{ mongo_password }}'
+    networks:
+      mongo_net:
+        aliases:
+          - '{{ mongo_host }}'
+
+networks:
+  {{ docker_network }}:
+    external:
+      name: {{ docker_network }}
