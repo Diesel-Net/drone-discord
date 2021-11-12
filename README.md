@@ -96,6 +96,7 @@ source deploy.sh
 # .env
 DISCORD_TOKEN=secret-token
 HEALTHCHECK_INTERVAL=10
+HEALTHCHECK_URL=http://localhost:5000/health
 
 MONGO_DATABASE=drone-discord
 MONGO_HOST=localhost
