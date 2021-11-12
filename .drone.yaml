@@ -83,8 +83,8 @@ steps:
       ANSIBLE_CONFIG: .ansible/ansible.cfg
       DISCORD_TOKEN:
         from_secret: discord_token
-      HEALTHCHECK_URL:
-        from_secret: healthcheck_url
+      SERVER_HOST:
+        from_secret: server_host
       MONGO_PORT_EXPOSED:
         from_secret: mongo_port_exposed
       MONGO_INITDB_ROOT_USERNAME:
