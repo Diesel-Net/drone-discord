@@ -26,6 +26,7 @@ services:
         - traefik.enable=true
         - traefik.http.services.{{ repository }}.loadbalancer.server.port=5000
         - traefik.http.routers.{{ repository }}.rule=Host(`{{ server_host }}`)
+        - traefik.http.routers.{{ repository }}.tls.certresolver=step-ca
     environment:
       REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
