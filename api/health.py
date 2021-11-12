@@ -15,5 +15,5 @@ def get_health():
     }
     get_db().health.insert_one(ping)
     pong = get_db().health.find_one({'timestamp': timestamp})
-    return { 'status': 'Healthy',
+    return { 'message': 'Healthy',
              'timestamp': timestamp }, 200
