@@ -88,7 +88,7 @@ steps:
       MONGO_INITDB_ROOT_PASSWORD:
         from_secret: mongo_initdb_root_password
     settings:
-      inventory: .ansible/inventory/stable
+      inventory: .ansible/inventory/production
       galaxy: .ansible/roles/requirements.yaml
       playbook: .ansible/deploy.yaml
       private_key:
