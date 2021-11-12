@@ -71,6 +71,10 @@ name: Deploy
 clone:
   depth: 1
 
+depends_on:
+  - 'Build Server'
+  - 'Build Client'
+
 steps:
 
   - name: configure and deploy (docker swarm)
