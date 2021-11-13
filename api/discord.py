@@ -119,7 +119,7 @@ def post_user_updated(request):
               "type": "rich",
               "title": 'User updated',
               "description": 'A user was updated',
-              "color": 0x38af28,
+              "color": 0xddb231,
               "fields": [
                 {
                   "name": 'username',
