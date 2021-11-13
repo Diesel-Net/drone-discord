@@ -81,6 +81,8 @@ steps:
     image: plugins/ansible:3
     environment:
       ANSIBLE_CONFIG: .ansible/ansible.cfg
+      DRONE_WEBHOOK_SECRET:
+        from_secret: drone_webhook_secret
       DISCORD_TOKEN:
         from_secret: discord_token
       DISCORD_CHANNEL_ID:

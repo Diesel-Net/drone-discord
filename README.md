@@ -94,6 +94,7 @@ source deploy.sh
 
 ```bash
 # .env
+DRONE_WEBHOOK_SECRET=webhook-secret
 DISCORD_TOKEN=secret-token
 DISCORD_CHANNEL_ID=873357168118755348
 HEALTHCHECK_INTERVAL=10

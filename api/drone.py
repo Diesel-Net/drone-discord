@@ -2,6 +2,7 @@ import requests
 import hashlib
 import hmac
 import json
+import os
 from copy import deepcopy
 from threading import Thread
 from datetime import datetime
@@ -11,6 +12,7 @@ from base64 import b64encode
 
 
 drone_events = Blueprint('drone-events', __name__, url_prefix='')
+key = os.getenv('DRONE_WEBHOOK_SECRET') 
 
 
 def _process_user_event(payload):
@@ -28,11 +30,13 @@ def _process_repo_event(payload):
     if payload['action'] == 'disabled':
         print('Event: Repo disabled')
 
+
 def _process_build_event(payload):
     if payload['action'] == 'created':
         print('Event: Build created')
     if payload['action'] == 'updated':
         print('Event: Build updated')
+
 
 DRONE_EVENT_HANDLERS = {
     'user': _process_user_event,
@@ -61,7 +65,7 @@ def _verify_signature(key):
 
     # calculate hmac sha256 hash with 'key' and the raw request 'body'
     calculated = b64encode(
-        calculate_signature(
+        _calculate_signature(
             key.encode(),
             signing_string.encode(),
         )
@@ -81,9 +85,9 @@ def post_events():
     response = { 'timestamp': datetime.utcnow()}
     event = request.headers.get('X-Drone-Event')
 
-    # TODO: Add HTTP Signature verification
-    #
-    #
+    if not _verify_signature(key):
+        response['message'] = 'Invalid Signature'
+        return response, 403
 
     if not event in DRONE_EVENT_HANDLERS.keys():
         response['message'] = 'Invalid payload'
