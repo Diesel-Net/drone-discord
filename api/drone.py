@@ -14,7 +14,7 @@ from api import discord
 
 
 drone_events = Blueprint('drone-events', __name__, url_prefix='')
-key = os.getenv('DRONE_WEBHOOK_SECRET') 
+KEY = os.getenv('DRONE_WEBHOOK_SECRET') 
 
 
 DRONE_EVENT_HANDLERS = {
@@ -33,16 +33,16 @@ DRONE_EVENT_HANDLERS = {
     }
 }
 
-def _construct_signature_string():
+def _construct_signature_string(headers):
     # https://tools.ietf.org/html/draft-cavage-http-signatures-10#section-2.3
     signature_headers = re.search(
         r'^.*headers=\"(.*?)\"', 
-        request.headers['Signature']
+        headers.get('Signature')
     ).group(1).split(' ')
 
     signing_string = ''
     for header in signature_headers:
-        signing_string += f'{ header }: { request.headers.get(header) }\n'
+        signing_string += f'{ header }: { headers.get(header) }\n'
     signing_string = signing_string[:-1]
 
     print(signing_string)
@@ -64,7 +64,7 @@ def _verify_signature(key):
     calculated = b64encode(
         _calculate_signature(
             key.encode(),
-            _construct_signature_string().encode(),
+            _construct_signature_string(request.headers).encode(),
         )
     ).decode()
     
@@ -83,7 +83,7 @@ def post_events():
     event = request.headers.get('X-Drone-Event')
     action = DRONE_EVENT_HANDLERS.get(event).get(request.json['action'])
 
-    if not _verify_signature(key):
+    if not _verify_signature(KEY):
         response['message'] = 'Invalid signature'
         return response, 403
 
@@ -93,7 +93,7 @@ def post_events():
 
     Thread(
         target=action, 
-        kwargs={'payload': deepcopy(request.json) }
+        args=[deepcopy(request.json)]
     ).start()
     response['message'] = 'Job queued'
 
