@@ -1,0 +1,1 @@
+drone_webhook_secret: '{{ lookup("env", "DRONE_WEBHOOK_SECRET") }}'
