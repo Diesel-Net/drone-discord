@@ -77,7 +77,7 @@ def _verify_signature(key):
 @drone_events.route('/', methods=['POST'])
 def post_events():
     print(f'{ request.headers }')
-    #print(f'{ json.dumps(request.json, indent=2) }')
+    print(f'{ json.dumps(request.json, indent=2) }')
     
     response = { 'timestamp': datetime.utcnow()}
     event = request.headers.get('X-Drone-Event')
