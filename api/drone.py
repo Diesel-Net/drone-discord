@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import json
 import os
+import re
 from copy import deepcopy
 from threading import Thread
 from datetime import datetime
@@ -44,6 +45,21 @@ DRONE_EVENT_HANDLERS = {
     'build': _process_build_event,
 }
 
+def _construct_signature_string():
+    # https://tools.ietf.org/html/draft-cavage-http-signatures-10#section-2.3
+    signature_headers = re.search(
+        r'^.*headers=\"(.*?)\"', 
+        request.headers['Signature']
+    ).group(1).split(' ')
+
+    signing_string = ''
+    for header in signature_headers:
+        signing_string += f'{ header }: { request.headers.get(header) }\n'
+    signing_string = signing_string[:-1]
+
+    print(signing_string)
+    return signing_string
+
 
 def _calculate_signature(key, signing_string):
     # drone signatures are calculated using hmac sha256
@@ -51,23 +67,16 @@ def _calculate_signature(key, signing_string):
 
 
 def _verify_signature(key):
-    # grab the signature from the header
-    for part in request.headers['Signature'].split(','):
-        if part[:11] == 'signature="':
-            # removes the trailing '"'
-            expected = part[11:-1]
+    # https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12#section-2.5
+    expected = re.search(
+        r'^.*signature=\"([a-zA-Z1-9\/\+\=].*?)\"', 
+        request.headers['Signature']
+    ).group(1)
 
-    # https://tools.ietf.org/html/draft-cavage-http-signatures-10#section-2.3
-    signing_string = (
-        f'date: { request.headers["Date"] }\n'
-        f'digest: { request.headers["Digest"] }'
-    )
-
-    # calculate hmac sha256 hash with 'key' and the raw request 'body'
     calculated = b64encode(
         _calculate_signature(
             key.encode(),
-            signing_string.encode(),
+            _construct_signature_string().encode(),
         )
     ).decode()
     
