@@ -178,7 +178,7 @@ def post_user_deleted(request):
               "type": "rich",
               "title": 'User deleted',
               "description": 'A user was deleted',
-              "color": 0xddb231,
+              "color": 0xb51c1c,
               "fields": [
                 {
                   "name": 'username',
