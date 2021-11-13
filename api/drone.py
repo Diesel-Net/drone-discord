@@ -20,7 +20,7 @@ KEY = os.getenv('DRONE_WEBHOOK_SECRET')
 DRONE_EVENT_HANDLERS = {
     'user': {
         'created': discord.post_user_created,
-        'updated': discord.post_user_updated,
+        #'updated': discord.post_user_updated,
         'deleted': discord.post_user_deleted,
     },
     'repo': {
