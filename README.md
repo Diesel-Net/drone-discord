@@ -82,8 +82,8 @@ It might be worth pointing out that this service is currently leveraging [`disco
 
 
 ## Deployments
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm node, and automated using Drone with Ansible.
-A convenience script is provided to invoke the ansible playbook manually if needed. You will need to ensure a proper SSH configuration and have an Ansible vault password set. Please see [deploy.sh](deploy.sh) for hints.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed onto docker swarm, and automated with Drone and Ansible.
+A convenience script is provided to invoke the ansible playbook manually if needed. You will need to ensure a proper SSH configuration and have a [default Ansible vault password set](https://docs.ansible.com/ansible/latest/user_guide/vault.html#setting-a-default-password-source). Please see [deploy.sh](deploy.sh) for hints.
 ```bash
 source deploy.sh
 ```
@@ -108,7 +108,7 @@ SERVER_SCHEME=http://
 SERVER_HOST=localhost:5000
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each of the components below needs to executed in their own terminal window, as they are using blocking calls while running inside isolated python virtual environments.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each component needs to executed in it's own terminal window, as they are started using blocking calls.
 
 #### MongoDB
 1. Create Python Virtual Environment and activate it
@@ -172,5 +172,7 @@ SERVER_HOST=localhost:5000
 #### Drone Events
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There should be a collection of test curls in the root of this repository. These are useful for simulating drone events when running locally.
 ```bash
-source test_curl.sh
+source test/repo_enabled.sh
+source test/repo_disabled.sh
+
 ```
