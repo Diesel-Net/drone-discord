@@ -59,7 +59,7 @@ def post_user_created(request):
             {
               "type": "rich",
               "title": 'User created',
-              "description": 'A new user account was created',
+              "description": 'A new user was created',
               "color": 0x38af28,
               "fields": [
                 {
@@ -110,7 +110,62 @@ def post_user_created(request):
 
 
 def post_user_updated(request):
-    pass
+    user = request.get('user')
+    system = request.get('system')
+
+    payload = {
+        'embeds': [
+            {
+              "type": "rich",
+              "title": 'User updated',
+              "description": 'A user was updated',
+              "color": 0x38af28,
+              "fields": [
+                {
+                  "name": 'username',
+                  "value": user.get('login'),
+                  "inline": True
+                },
+                {
+                  "name": 'active',
+                  "value": 'yes' if user.get('active') else 'no',
+                  "inline": True
+                },
+                {
+                  "name": 'type',
+                  "value": 'Machine' if user.get('machine') else 'User',
+                  "inline": True
+                },
+                {
+                  "name": 'role',
+                  "value": 'Admin' if user.get('admin') else 'Member',
+                  "inline": True
+                },
+                {
+                  "name": 'created',
+                  "value": user.get('created'),
+                  "inline": True,
+                },
+                {
+                  "name": 'last login',
+                  "value": f"{user.get('last_login') } days ago",
+                  "inline": True,
+                }
+              ],
+              "thumbnail": {
+                "url": user.get('avatar'),
+                "height": 0,
+                "width": 0
+              },
+              "footer": {
+                "text": system.get('host'),
+                "icon_url": f"{ system.get('link') }/favicon.png"
+              },
+              "url": f"{ system.get('link') }/settings/users"
+            }
+        ]
+    }
+    _create_message(payload)
 
 
 def post_user_deleted(request):
