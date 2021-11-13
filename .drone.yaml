@@ -83,6 +83,8 @@ steps:
       ANSIBLE_CONFIG: .ansible/ansible.cfg
       DISCORD_TOKEN:
         from_secret: discord_token
+      DISCORD_CHANNEL_ID:
+        from_secret: discord_channel_id
       SERVER_HOST:
         from_secret: server_host
       MONGO_PORT_EXPOSED:

@@ -31,9 +31,7 @@ services:
       REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
       DISCORD_TOKEN: '{{ discord_token }}'
-      SERVER_SCHEME: '{{ server_scheme }}'
-      SERVER_HOST: '{{ server_host }}'
-      SERVER_BASE_PATH: '{{ server_base_path }}'
+      DISCORD_CHANNEL_ID: '{{ discord_channel_id }}'
       MONGO_DATABASE: '{{ mongo_database }}'
       MONGO_HOST: '{{ mongo_host }}'
       MONGO_PORT: {{ mongo_port }}

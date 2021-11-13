@@ -1,2 +1,2 @@
 discord_token: '{{ lookup("env", "DISCORD_TOKEN") }}'
-discord_channel: '{{ lookup("env", "DISCORD_CHANNEL") }}'
+discord_channel_id: '{{ lookup("env", "DISCORD_CHANNEL_ID") }}'

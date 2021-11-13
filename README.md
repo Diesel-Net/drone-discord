@@ -119,7 +119,7 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    ````
 
 2. Start MongoDB container.
-   Note that the `docker run` command is not able to see env vars for `-p` option so you will have to change the port numbers there if going with a non-default configuration.
+   Note that the `docker run` command is not able to see env vars for `-p` option so you will have to change the port numbers manually if going with a non-default configuration.
    ```bash
    dotenv run \
      docker run \
