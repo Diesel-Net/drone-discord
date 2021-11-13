@@ -21,8 +21,12 @@ RUN pip3 install gunicorn==20.1.0
 
 RUN pip3 install -r server-requirements.txt
 
-# Expose the flask port
+# default flask port
 EXPOSE 5000
+
+RUN apt update && apt install curl -y
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s \
+    CMD curl --fail http://localhost:5000/health || exit 1
 
 ENTRYPOINT [ \
     "gunicorn", \
