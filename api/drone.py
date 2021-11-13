@@ -7,42 +7,30 @@ import re
 from copy import deepcopy
 from threading import Thread
 from datetime import datetime
+from base64 import b64encode
 from flask import Blueprint, request
 from api.mongo import get_db
-from base64 import b64encode
+from api import discord
 
 
 drone_events = Blueprint('drone-events', __name__, url_prefix='')
 key = os.getenv('DRONE_WEBHOOK_SECRET') 
 
 
-def _process_user_event(payload):
-    if payload['action'] == 'created':
-        print('Event: User created')
-    if payload['action'] == 'updated':
-        print('Event: User updated')
-    if payload['action'] == 'deleted':
-        print('Event: User deleted')
-        
-
-def _process_repo_event(payload):
-    if payload['action'] == 'enabled':
-        print('Event: Repo enabled')
-    if payload['action'] == 'disabled':
-        print('Event: Repo disabled')
-
-
-def _process_build_event(payload):
-    if payload['action'] == 'created':
-        print('Event: Build created')
-    if payload['action'] == 'updated':
-        print('Event: Build updated')
-
-
 DRONE_EVENT_HANDLERS = {
-    'user': _process_user_event,
-    'repo': _process_repo_event,
-    'build': _process_build_event,
+    'user': {
+        'created': discord.post_user_created,
+        'updated': discord.post_user_updated,
+        'deleted': discord.post_user_deleted,
+    },
+    'repo': {
+        'enabled': discord.post_repo_enabled,
+        'disabled': discord.post_repo_disabled,
+    },
+    'build': {
+        'created': discord.post_build_created,
+        'updated': discord.post_build_updated,
+    }
 }
 
 def _construct_signature_string():
@@ -89,22 +77,24 @@ def _verify_signature(key):
 @drone_events.route('/', methods=['POST'])
 def post_events():
     print(f'{ request.headers }')
-    print(f'{ json.dumps(request.json, indent=2) }')
+    #print(f'{ json.dumps(request.json, indent=2) }')
     
     response = { 'timestamp': datetime.utcnow()}
     event = request.headers.get('X-Drone-Event')
+    action = DRONE_EVENT_HANDLERS.get(event).get(request.json['action'])
 
     if not _verify_signature(key):
-        response['message'] = 'Invalid Signature'
+        response['message'] = 'Invalid signature'
         return response, 403
 
-    if not event in DRONE_EVENT_HANDLERS.keys():
+    if not callable(action) or event != request.json['event']:
         response['message'] = 'Invalid payload'
         return response, 400
 
     Thread(
-        target=DRONE_EVENT_HANDLERS[event], 
+        target=action, 
         kwargs={'payload': deepcopy(request.json) }
     ).start()
     response['message'] = 'Job queued'
+
     return response, 200
