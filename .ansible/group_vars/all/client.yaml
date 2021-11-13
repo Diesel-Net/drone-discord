@@ -1,2 +1,2 @@
-healthcheck_url: '{{ server_scheme }}{{ server_host }}{{ server_base_path }}/health'
+healthcheck_url: 'https://{{ server_host }}/health'
 healthcheck_interval: 10 # seconds

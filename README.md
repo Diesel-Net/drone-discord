@@ -103,9 +103,6 @@ MONGO_HOST=localhost
 MONGO_PORT=27017
 MONGO_INITDB_ROOT_USERNAME=root
 MONGO_INITDB_ROOT_PASSWORD=secret-password
-
-SERVER_SCHEME=http://
-SERVER_HOST=localhost:5000
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each component needs to executed in it's own terminal window, as they are started using blocking calls.
@@ -122,6 +119,7 @@ SERVER_HOST=localhost:5000
    ````
 
 2. Start MongoDB container.
+   Note that the `docker run` command is not able to see env vars for `-p` option so you will have to change the port numbers there if going with a non-default configuration.
    ```bash
    dotenv run \
      docker run \
