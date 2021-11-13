@@ -95,6 +95,7 @@ source deploy.sh
 ```bash
 # .env
 DISCORD_TOKEN=secret-token
+DISCORD_CHANNEL_ID=873357168118755348
 HEALTHCHECK_INTERVAL=10
 HEALTHCHECK_URL=http://localhost:5000/health
 
