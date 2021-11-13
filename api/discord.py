@@ -12,6 +12,12 @@ HEADERS = {
     'Authorization': f'Bot { DISCORD_TOKEN }'
 }
 
+COLORS = {
+    'green': 0x38af28,
+    'yellow': 0xddb231,
+    'red': 0xb51c1c,
+}
+
 # TODO: 
 #   - Deal with Emebed limits
 #   - Deal with API rate limiting
@@ -60,7 +66,7 @@ def post_user_created(request):
               "type": "rich",
               "title": 'User created',
               "description": 'A new user was created',
-              "color": 0x38af28,
+              "color": COLORS['green'],
               "fields": [
                 {
                   "name": 'username',
@@ -119,7 +125,7 @@ def post_user_updated(request):
               "type": "rich",
               "title": 'User updated',
               "description": 'A user was updated',
-              "color": 0xddb231,
+              "color": COLORS['yellow'],
               "fields": [
                 {
                   "name": 'username',
@@ -178,7 +184,7 @@ def post_user_deleted(request):
               "type": "rich",
               "title": 'User deleted',
               "description": 'A user was deleted',
-              "color": 0xb51c1c,
+              "color": COLORS['red'],
               "fields": [
                 {
                   "name": 'username',
