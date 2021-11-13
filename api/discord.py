@@ -63,111 +63,52 @@ def post_user_created(request):
     payload = {
         'embeds': [
             {
-              "type": "rich",
-              "title": 'User created',
-              "description": 'A new user was created',
-              "color": COLORS['green'],
-              "fields": [
-                {
-                  "name": 'username',
-                  "value": user.get('login'),
-                  "inline": True
+                "type": "rich",
+                "title": 'User created',
+                "description": 'A new user was created',
+                "color": COLORS['green'],
+                "fields": [
+                    {
+                      "name": 'username',
+                      "value": user.get('login'),
+                      "inline": True
+                    },
+                    {
+                      "name": 'active',
+                      "value": 'yes' if user.get('active') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": 'type',
+                      "value": 'Machine' if user.get('machine') else 'User',
+                      "inline": True
+                    },
+                    {
+                      "name": 'role',
+                      "value": 'Admin' if user.get('admin') else 'Member',
+                      "inline": True
+                    },
+                    {
+                      "name": 'created',
+                      "value": user.get('created'),
+                      "inline": True,
+                    },
+                    {
+                      "name": 'last login',
+                      "value": f"{user.get('last_login') } days ago",
+                      "inline": True,
+                    }
+                ],
+                "thumbnail": {
+                    "url": user.get('avatar'),
+                    "height": 0,
+                    "width": 0
                 },
-                {
-                  "name": 'active',
-                  "value": 'yes' if user.get('active') else 'no',
-                  "inline": True
+                "footer": {
+                    "text": system.get('host'),
+                    "icon_url": f"{ system.get('link') }/favicon.png"
                 },
-                {
-                  "name": 'type',
-                  "value": 'Machine' if user.get('machine') else 'User',
-                  "inline": True
-                },
-                {
-                  "name": 'role',
-                  "value": 'Admin' if user.get('admin') else 'Member',
-                  "inline": True
-                },
-                {
-                  "name": 'created',
-                  "value": user.get('created'),
-                  "inline": True,
-                },
-                {
-                  "name": 'last login',
-                  "value": f"{user.get('last_login') } days ago",
-                  "inline": True,
-                }
-              ],
-              "thumbnail": {
-                "url": user.get('avatar'),
-                "height": 0,
-                "width": 0
-              },
-              "footer": {
-                "text": system.get('host'),
-                "icon_url": f"{ system.get('link') }/favicon.png"
-              },
-              "url": f"{ system.get('link') }/settings/users"
-            }
-        ]
-    }
-    _create_message(payload)
-
-
-def post_user_updated(request):
-    user = request.get('user')
-    system = request.get('system')
-
-    payload = {
-        'embeds': [
-            {
-              "type": "rich",
-              "title": 'User updated',
-              "description": 'A user was updated',
-              "color": COLORS['yellow'],
-              "fields": [
-                {
-                  "name": 'username',
-                  "value": user.get('login'),
-                  "inline": True
-                },
-                {
-                  "name": 'active',
-                  "value": 'yes' if user.get('active') else 'no',
-                  "inline": True
-                },
-                {
-                  "name": 'type',
-                  "value": 'Machine' if user.get('machine') else 'User',
-                  "inline": True
-                },
-                {
-                  "name": 'role',
-                  "value": 'Admin' if user.get('admin') else 'Member',
-                  "inline": True
-                },
-                {
-                  "name": 'created',
-                  "value": user.get('created'),
-                  "inline": True,
-                },
-                {
-                  "name": 'last login',
-                  "value": f"{user.get('last_login') } days ago",
-                  "inline": True,
-                }
-              ],
-              "thumbnail": {
-                "url": user.get('avatar'),
-                "height": 0,
-                "width": 0
-              },
-              "footer": {
-                "text": system.get('host'),
-                "icon_url": f"{ system.get('link') }/favicon.png"
-              },
-              "url": f"{ system.get('link') }/settings/users"
+                "url": f"{ system.get('link') }/settings/users"
             }
         ]
     }
@@ -181,52 +122,52 @@ def post_user_deleted(request):
     payload = {
         'embeds': [
             {
-              "type": "rich",
-              "title": 'User deleted',
-              "description": 'A user was deleted',
-              "color": COLORS['red'],
-              "fields": [
-                {
-                  "name": 'username',
-                  "value": user.get('login'),
-                  "inline": True
+                "type": "rich",
+                "title": 'User deleted',
+                "description": 'A user was deleted',
+                "color": COLORS['red'],
+                "fields": [
+                    {
+                      "name": 'username',
+                      "value": user.get('login'),
+                      "inline": True
+                    },
+                    {
+                      "name": 'active',
+                      "value": 'yes' if user.get('active') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": 'type',
+                      "value": 'Machine' if user.get('machine') else 'User',
+                      "inline": True
+                    },
+                    {
+                      "name": 'role',
+                      "value": 'Admin' if user.get('admin') else 'Member',
+                      "inline": True
+                    },
+                    {
+                      "name": 'created',
+                      "value": user.get('created'),
+                      "inline": True,
+                    },
+                    {
+                      "name": 'last login',
+                      "value": f"{user.get('last_login') } days ago",
+                      "inline": True,
+                    }
+                ],
+                "thumbnail": {
+                    "url": user.get('avatar'),
+                    "height": 0,
+                    "width": 0
                 },
-                {
-                  "name": 'active',
-                  "value": 'yes' if user.get('active') else 'no',
-                  "inline": True
+                "footer": {
+                    "text": system.get('host'),
+                    "icon_url": f"{ system.get('link') }/favicon.png"
                 },
-                {
-                  "name": 'type',
-                  "value": 'Machine' if user.get('machine') else 'User',
-                  "inline": True
-                },
-                {
-                  "name": 'role',
-                  "value": 'Admin' if user.get('admin') else 'Member',
-                  "inline": True
-                },
-                {
-                  "name": 'created',
-                  "value": user.get('created'),
-                  "inline": True,
-                },
-                {
-                  "name": 'last login',
-                  "value": f"{user.get('last_login') } days ago",
-                  "inline": True,
-                }
-              ],
-              "thumbnail": {
-                "url": user.get('avatar'),
-                "height": 0,
-                "width": 0
-              },
-              "footer": {
-                "text": system.get('host'),
-                "icon_url": f"{ system.get('link') }/favicon.png"
-              },
-              "url": f"{ system.get('link') }/settings/users"
+                "url": f"{ system.get('link') }/settings/users"
             }
         ]
     }
