@@ -1,0 +1,40 @@
+{
+  "event": "repo",
+  "action": "disabled",
+  "repo": {
+    "id": 35,
+    "uid": "367760609",
+    "user_id": 1,
+    "namespace": "Diesel-Net",
+    "name": "plex",
+    "slug": "Diesel-Net/plex",
+    "scm": "",
+    "git_http_url": "https://github.com/Diesel-Net/plex.git",
+    "git_ssh_url": "git@github.com:Diesel-Net/plex.git",
+    "link": "https://github.com/Diesel-Net/plex",
+    "default_branch": "stable",
+    "private": false,
+    "visibility": "private",
+    "active": false,
+    "config_path": ".drone.yaml",
+    "trusted": false,
+    "protected": false,
+    "ignore_forks": false,
+    "ignore_pull_requests": false,
+    "auto_cancel_pull_requests": false,
+    "auto_cancel_pushes": false,
+    "auto_cancel_running": false,
+    "timeout": 60,
+    "counter": 190,
+    "synced": 1621129422,
+    "created": 1621129422,
+    "updated": 1621129422,
+    "version": 278
+  },
+  "system": {
+    "proto": "https",
+    "host": "drone.diesel.net",
+    "link": "https://drone.diesel.net",
+    "version": "2.4.0"
+  }
+}
