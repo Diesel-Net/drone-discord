@@ -30,6 +30,7 @@ services:
     environment:
       REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+      DRONE_WEBHOOK_SECRET: '{{ drone_webhook_secret }}'
       DISCORD_TOKEN: '{{ discord_token }}'
       DISCORD_CHANNEL_ID: '{{ discord_channel_id }}'
       MONGO_DATABASE: '{{ mongo_database }}'
