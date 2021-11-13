@@ -1,0 +1,24 @@
+{
+  "event": "user",
+  "action": "deleted",
+  "user": {
+    "id": 3,
+    "login": "test",
+    "email": "test@something.nothing",
+    "machine": false,
+    "admin": false,
+    "active": true,
+    "avatar": "https://avatars.githubusercontent.com/u/00000000?v=4",
+    "syncing": false,
+    "synced": 0,
+    "created": 1636759997,
+    "updated": 1636759998,
+    "last_login": 0
+  },
+  "system": {
+    "proto": "https",
+    "host": "drone.diesel.net",
+    "link": "https://drone.diesel.net",
+    "version": "2.4.0"
+  }
+}
