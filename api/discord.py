@@ -63,204 +63,192 @@ def _edit_message(payload, message_id):
 def post_user_created(request):
     user = request.get('user')
     system = request.get('system')
-    payload = {
-        'embeds': [
-            {
-                "type": "rich",
-                "title": f"Hello, { user.get('login') }",
-                "description": 'User created',
-                "color": COLORS['blue'],
-                "fields": [
-                    {
-                      "name": 'username',
-                      "value": user.get('login'),
-                      "inline": True
-                    },
-                    {
-                      "name": 'active',
-                      "value": 'yes' if user.get('active') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": 'type',
-                      "value": 'Machine' if user.get('machine') else 'User',
-                      "inline": True
-                    },
-                    {
-                      "name": 'role',
-                      "value": 'Admin' if user.get('admin') else 'Member',
-                      "inline": True
-                    },
-                ],
-                "thumbnail": {
-                    "url": user.get('avatar'),
-                    "height": 0,
-                    "width": 0
+    _create_message({
+        'embeds': [{
+            "type": "rich",
+            "title": f"Hello, { user.get('login') }",
+            "url": f"{ system.get('link') }/settings/users",
+            "description": 'User created',
+            "color": COLORS['blue'],
+            "fields": [
+                {
+                  "name": 'username',
+                  "value": user.get('login'),
+                  "inline": True,
                 },
-                "footer": {
-                    "text": f"v{ system.get('version') }",
-                    "icon_url": f"{ system.get('link') }/favicon.png"
+                {
+                  "name": 'active',
+                  "value": 'yes' if user.get('active') else 'no',
+                  "inline": True,
                 },
-                "url": f"{ system.get('link') }/settings/users"
-            }
-        ]
-    }
-    _create_message(payload)
+                {
+                  "name": 'type',
+                  "value": 'Machine' if user.get('machine') else 'User',
+                  "inline": True,
+                },
+                {
+                  "name": 'role',
+                  "value": 'Admin' if user.get('admin') else 'Member',
+                  "inline": True,
+                },
+            ],
+            "thumbnail": {
+                "url": user.get('avatar'),
+                "height": 0,
+                "width": 0,
+            },
+            "footer": {
+                "text": f"v{ system.get('version') }",
+                "icon_url": f"{ system.get('link') }/favicon.png",
+            },
+        }]
+    })
 
 
 def post_user_deleted(request):
     user = request.get('user')
     system = request.get('system')
-    payload = {
-        'embeds': [
-            {
-                "type": "rich",
-                "title": f"Goodbye, { user.get('login') }",
-                "description": 'User deleted',
-                "color": COLORS['blue'],
-                "fields": [
-                    {
-                      "name": 'username',
-                      "value": user.get('login'),
-                      "inline": True
-                    },
-                    {
-                      "name": 'active',
-                      "value": 'yes' if user.get('active') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": 'type',
-                      "value": 'Machine' if user.get('machine') else 'User',
-                      "inline": True
-                    },
-                    {
-                      "name": 'role',
-                      "value": 'Admin' if user.get('admin') else 'Member',
-                      "inline": True
-                    },
-                ],
-                "thumbnail": {
-                    "url": user.get('avatar'),
-                    "height": 0,
-                    "width": 0
+    _create_message({
+        'embeds': [{
+            "type": "rich",
+            "title": f"Goodbye, { user.get('login') }",
+            "url": f"{ system.get('link') }/settings/users",
+            "description": 'User deleted',
+            "color": COLORS['blue'],
+            "fields": [
+                {
+                  "name": 'username',
+                  "value": user.get('login'),
+                  "inline": True,
                 },
-                "footer": {
-                    "text": f"v{ system.get('version') }",
-                    "icon_url": f"{ system.get('link') }/favicon.png"
+                {
+                  "name": 'active',
+                  "value": 'yes' if user.get('active') else 'no',
+                  "inline": True,
                 },
-                "url": f"{ system.get('link') }/settings/users"
-            }
-        ]
-    }
-    _create_message(payload)
+                {
+                  "name": 'type',
+                  "value": 'Machine' if user.get('machine') else 'User',
+                  "inline": True,
+                },
+                {
+                  "name": 'role',
+                  "value": 'Admin' if user.get('admin') else 'Member',
+                  "inline": True,
+                },
+            ],
+            "thumbnail": {
+                "url": user.get('avatar'),
+                "height": 0,
+                "width": 0,
+            },
+            "footer": {
+                "text": f"v{ system.get('version') }",
+                "icon_url": f"{ system.get('link') }/favicon.png",
+            },
+        }]
+    })
 
 
 def post_repo_enabled(request):
     user = request.get('user')
     repo = request.get('repo')
     system = request.get('system')
-    payload = {
-        'embeds': [
-            {
-                "type": "rich",
-                "title": repo.get('slug'),
-                "description": 'Repository enabled\n',
-                "color": COLORS['blue'],
-                "fields": [
-                    {
-                      "name": 'Config',
-                      "value": repo.get('config_path'),
-                      "inline": True
-                    },
-                    {
-                      "name": 'Protected',
-                      "value": 'yes' if repo.get('protected') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": 'Trusted',
-                      "value": 'yes' if repo.get('trusted') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": 'Ignore Forks',
-                      "value": 'yes' if repo.get('ignore_forks') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": "Ignore PR's",
-                      "value": 'yes' if repo.get('ignore_pull_requests') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": 'Repository',
-                      "value": f"[Open in SCM]({ repo.get('link') })",
-                      "inline": True
-                    },
-                ],
-                "footer": {
-                    "text": f"v{ system.get('version') }",
-                    "icon_url": f"{ system.get('link') }/favicon.png"
+    _create_message({
+        'embeds': [{
+            "type": "rich",
+            "title": repo.get('slug'),
+            "url": f"{ system.get('link') }/{ repo.get('slug') }/settings",
+            "description": 'Repository enabled\n',
+            "color": COLORS['blue'],
+            "fields": [
+                {
+                  "name": 'Config',
+                  "value": repo.get('config_path'),
+                  "inline": True,
                 },
-                "url": f"{ system.get('link') }/{ repo.get('slug') }/settings"
-            }
-        ]
-    }
-    _create_message(payload)
+                {
+                  "name": 'Protected',
+                  "value": 'yes' if repo.get('protected') else 'no',
+                  "inline": True,
+                },
+                {
+                  "name": 'Trusted',
+                  "value": 'yes' if repo.get('trusted') else 'no',
+                  "inline": True,
+                },
+                {
+                  "name": 'Ignore Forks',
+                  "value": 'yes' if repo.get('ignore_forks') else 'no',
+                  "inline": True,
+                },
+                {
+                  "name": "Ignore PR's",
+                  "value": 'yes' if repo.get('ignore_pull_requests') else 'no',
+                  "inline": True,
+                },
+                {
+                  "name": 'Repository',
+                  "value": f"[Open in SCM]({ repo.get('link') })",
+                  "inline": True,
+                },
+            ],
+            "footer": {
+                "text": f"v{ system.get('version') }",
+                "icon_url": f"{ system.get('link') }/favicon.png",
+            },
+        }]
+    })
 
 
 def post_repo_disabled(request):
     repo = request.get('repo')
     system = request.get('system')
-    payload = {
-        'embeds': [
-            {
-                "type": "rich",
-                "title": repo.get('slug'),
-                "description": 'Repository disabled\n',
-                "color": COLORS['blue'],
-                "fields": [
-                    {
-                      "name": 'Config',
-                      "value": repo.get('config_path'),
-                      "inline": True
-                    },
-                    {
-                      "name": 'Protected',
-                      "value": 'yes' if repo.get('protected') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": 'Trusted',
-                      "value": 'yes' if repo.get('trusted') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": 'Ignore Forks',
-                      "value": 'yes' if repo.get('ignore_forks') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": "Ignore PR's",
-                      "value": 'yes' if repo.get('ignore_pull_requests') else 'no',
-                      "inline": True
-                    },
-                    {
-                      "name": 'Repository',
-                      "value": f"[Open in SCM]({ repo.get('link') })",
-                      "inline": True
-                    },
-                ],
-                "footer": {
-                    "text": f"v{ system.get('version') }",
-                    "icon_url": f"{ system.get('link') }/favicon.png"
+    _create_message({
+        'embeds': [{
+            "type": "rich",
+            "title": repo.get('slug'),
+            "url": f"{ system.get('link') }/{ repo.get('slug') }/settings",
+            "description": 'Repository disabled\n',
+            "color": COLORS['blue'],
+            "fields": [
+                {
+                  "name": 'Config',
+                  "value": repo.get('config_path'),
+                  "inline": True,
                 },
-                "url": f"{ system.get('link') }/{ repo.get('slug') }/settings"
-            }
-        ]
-    }
-    _create_message(payload)
+                {
+                  "name": 'Protected',
+                  "value": 'yes' if repo.get('protected') else 'no',
+                  "inline": True,
+                },
+                {
+                  "name": 'Trusted',
+                  "value": 'yes' if repo.get('trusted') else 'no',
+                  "inline": True,
+                },
+                {
+                  "name": 'Ignore Forks',
+                  "value": 'yes' if repo.get('ignore_forks') else 'no',
+                  "inline": True,
+                },
+                {
+                  "name": "Ignore PR's",
+                  "value": 'yes' if repo.get('ignore_pull_requests') else 'no',
+                  "inline": True,
+                },
+                {
+                  "name": 'Repository',
+                  "value": f"[Open in SCM]({ repo.get('link') })",
+                  "inline": True,
+                },
+            ],
+            "footer": {
+                "text": f"v{ system.get('version') }",
+                "icon_url": f"{ system.get('link') }/favicon.png",
+            },
+        }]
+    })
 
 
 def post_build_created(request):
