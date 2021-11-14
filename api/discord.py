@@ -35,8 +35,8 @@ def _create_message(payload):
         assert response.status_code == 200      
 
     except Exception as ex:
-        print('discord: create_message() failure')
         print(ex)
+        print('discord: create_message() failure')
 
     return response
 
@@ -52,17 +52,15 @@ def _edit_message(payload, message_id):
         assert response.status_code == 200      
 
     except Exception as ex:
-        print('discord: edit_message() failure')
         print(ex)
+        print('discord: edit_message() failure')
 
     return response
 
 
 def post_user_created(request):
-    
     user = request.get('user')
     system = request.get('system')
-
     payload = {
         'embeds': [
             {
