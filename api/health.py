@@ -9,11 +9,12 @@ health_check = Blueprint('health-check', __name__, url_prefix='')
 def get_health():
     user_agent = request.headers['User-Agent']
     timestamp = datetime.utcnow()
-    ping = {
+    record = {
         'timestamp': timestamp,
         'userAgent': user_agent,
     }
-    get_db().health.insert_one(ping)
-    pong = get_db().health.find_one({'timestamp': timestamp})
+    database = get_db() 
+    database.health.insert_one(record)
+    database.health.delete_one({'timestamp': timestamp})
     return { 'message': 'Healthy',
              'timestamp': timestamp }, 200

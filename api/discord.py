@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 from api.mongo import get_db
 
+
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_CHANNEL_ID = os.getenv('DISCORD_CHANNEL_ID')
 DISCORD_API_BASE_URL = os.getenv('DISCORD_API_BASE_URL') or 'https://discord.com/api'
@@ -18,6 +19,7 @@ COLORS = {
     'red': 0xc51b1b,
     'blue': 0x21b7fd,
 }
+
 
 # TODO: 
 #   - Deal with Emebed limits
@@ -109,7 +111,6 @@ def post_user_created(request):
 def post_user_deleted(request):
     user = request.get('user')
     system = request.get('system')
-
     payload = {
         'embeds': [
             {
@@ -159,7 +160,6 @@ def post_repo_enabled(request):
     user = request.get('user')
     repo = request.get('repo')
     system = request.get('system')
-
     payload = {
         'embeds': [
             {
@@ -195,7 +195,7 @@ def post_repo_enabled(request):
                     },
                     {
                       "name": 'Repository',
-                      "value": f"[Open in GitHub]({ repo.get('link') })",
+                      "value": f"[Open in SCM]({ repo.get('link') })",
                       "inline": True
                     },
                 ],
@@ -203,7 +203,7 @@ def post_repo_enabled(request):
                     "text": f"v{ system.get('version') }",
                     "icon_url": f"{ system.get('link') }/favicon.png"
                 },
-                "url": f"{ system.get('link') }/{ repo.get('slug') }"
+                "url": f"{ system.get('link') }/{ repo.get('slug') }/settings"
             }
         ]
     }
@@ -213,7 +213,6 @@ def post_repo_enabled(request):
 def post_repo_disabled(request):
     repo = request.get('repo')
     system = request.get('system')
-
     payload = {
         'embeds': [
             {
@@ -249,7 +248,7 @@ def post_repo_disabled(request):
                     },
                     {
                       "name": 'Repository',
-                      "value": f"[Open in GitHub]({ repo.get('link') })",
+                      "value": f"[Open in SCM]({ repo.get('link') })",
                       "inline": True
                     },
                 ],
@@ -257,7 +256,7 @@ def post_repo_disabled(request):
                     "text": f"v{ system.get('version') }",
                     "icon_url": f"{ system.get('link') }/favicon.png"
                 },
-                "url": f"{ system.get('link') }/{ repo.get('slug') }"
+                "url": f"{ system.get('link') }/{ repo.get('slug') }/settings"
             }
         ]
     }
