@@ -33,8 +33,8 @@
   },
   "system": {
     "proto": "https",
-    "host": "drone.diesel.net",
-    "link": "https://drone.diesel.net",
+    "host": "drone.kiwi-labs.net",
+    "link": "https://drone.kiwi-labs.net",
     "version": "2.4.0"
   }
 }
