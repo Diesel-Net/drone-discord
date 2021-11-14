@@ -43,8 +43,6 @@ def _create_message(payload):
         print(ex)
         print('discord: create_message() failure')
 
-    return response
-
 
 def _edit_message(payload, message_id):
     try:
@@ -66,8 +64,6 @@ def _edit_message(payload, message_id):
     except Exception as ex:
         print(ex)
         print('discord: edit_message() failure')
-
-    return response
 
 
 def post_user_created(request):
@@ -202,7 +198,7 @@ def post_repo_enabled(request):
                 },
                 {
                   "name": 'Repository',
-                  "value": f"[Open in SCM]({ repo.get('link') })",
+                  "value": f"[link]({ repo.get('link') })",
                   "inline": True,
                 },
             ],
@@ -253,7 +249,7 @@ def post_repo_disabled(request):
                 },
                 {
                   "name": 'Repository',
-                  "value": f"[Open in SCM]({ repo.get('link') })",
+                  "value": f"[link]({ repo.get('link') })",
                   "inline": True,
                 },
             ],
