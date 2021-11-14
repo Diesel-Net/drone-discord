@@ -1,6 +1,7 @@
 import os
 import requests
 from datetime import datetime
+from time import sleep
 from api.mongo import get_db
 
 
@@ -21,11 +22,6 @@ COLORS = {
 }
 
 
-# TODO: 
-#   - Deal with Emebed limits
-#   - Deal with API rate limiting
-
-
 def _create_message(payload):
     try:
         response = requests.post(
@@ -33,8 +29,15 @@ def _create_message(payload):
             url = DISCORD_MESSAGES_API,
             json = payload,
         )
+
+        if response.status_code == 429:
+            # rate limited
+            retry_after = response.json()['retry_after']
+            print(f"discord: rate limited, retrying after { retry_after } seconds")
+            sleep(retry_after)
+            _create_message(payload)
         
-        assert response.status_code == 200      
+        assert response.status_code == 200     
 
     except Exception as ex:
         print(ex)
@@ -50,7 +53,14 @@ def _edit_message(payload, message_id):
             url = f'{ DISCORD_MESSAGES_API }/{ message_id }',
             json = payload,
         )
-        
+
+        if response.status_code == 429:
+            # rate limited
+            retry_after = response.json()['retry_after']
+            print(f"discord: rate limited, retrying after { retry_after } seconds")
+            sleep(retry_after)
+            _create_message(payload)
+
         assert response.status_code == 200      
 
     except Exception as ex:
@@ -63,6 +73,7 @@ def _edit_message(payload, message_id):
 def post_user_created(request):
     user = request.get('user')
     system = request.get('system')
+
     _create_message({
         'embeds': [{
             "type": "rich",
@@ -108,6 +119,7 @@ def post_user_created(request):
 def post_user_deleted(request):
     user = request.get('user')
     system = request.get('system')
+
     _create_message({
         'embeds': [{
             "type": "rich",
@@ -154,6 +166,7 @@ def post_repo_enabled(request):
     user = request.get('user')
     repo = request.get('repo')
     system = request.get('system')
+
     _create_message({
         'embeds': [{
             "type": "rich",
@@ -204,6 +217,7 @@ def post_repo_enabled(request):
 def post_repo_disabled(request):
     repo = request.get('repo')
     system = request.get('system')
+
     _create_message({
         'embeds': [{
             "type": "rich",
@@ -252,8 +266,10 @@ def post_repo_disabled(request):
 
 
 def post_build_created(request):
+    # TODO
     pass
 
 
 def post_build_updated(request):
+    # TODO
     pass
