@@ -1,5 +1,6 @@
 import os
 import requests
+from datetime import datetime
 from api.mongo import get_db
 
 
@@ -13,9 +14,10 @@ HEADERS = {
 }
 
 COLORS = {
-    'green': 0x38af28,
+    'green': 0x6bcf00,
     'yellow': 0xddb231,
-    'red': 0xb51c1c,
+    'red': 0xd94848,
+    'blue': 0x21b7fd,
 }
 
 # TODO: 
@@ -90,14 +92,9 @@ def post_user_created(request):
                     },
                     {
                       "name": 'created',
-                      "value": user.get('created'),
+                      "value": f"{datetime.fromtimestamp(user.get('created')):%m-%d-%Y }",
                       "inline": True,
                     },
-                    {
-                      "name": 'last login',
-                      "value": f"{user.get('last_login') } days ago",
-                      "inline": True,
-                    }
                 ],
                 "thumbnail": {
                     "url": user.get('avatar'),
@@ -149,14 +146,10 @@ def post_user_deleted(request):
                     },
                     {
                       "name": 'created',
-                      "value": user.get('created'),
+                      "value": f"{datetime.fromtimestamp(user.get('created')):%m-%d-%Y }" if user.get('created') else '',
                       "inline": True,
                     },
-                    {
-                      "name": 'last login',
-                      "value": f"{user.get('last_login') } days ago",
-                      "inline": True,
-                    }
+                    
                 ],
                 "thumbnail": {
                     "url": user.get('avatar'),
@@ -175,7 +168,38 @@ def post_user_deleted(request):
 
 
 def post_repo_enabled(request):
-    pass
+    user = request.get('user')
+    repo = request.get('repo')
+    system = request.get('system')
+
+    payload = {
+        'embeds': [
+            {
+                "type": "rich",
+                "title": f"{repo.get('slug')} Enabled",
+                "description": 'Repository activated',
+                "color": COLORS['blue'],
+                "fields": [
+                    {
+                      "name": 'default branch',
+                      "value": repo.get('default_branch'),
+                      "inline": True
+                    },
+                ],
+                "thumbnail": {
+                    "url": user.get('avatar'),
+                    "height": 0,
+                    "width": 0
+                },
+                "footer": {
+                    "text": system.get('host'),
+                    "icon_url": f"{ system.get('link') }/favicon.png"
+                },
+                "url": f"{ repo.get('link') }"
+            }
+        ]
+    }
+    _create_message(payload)
 
 
 def post_repo_disabled(request):
