@@ -57,7 +57,7 @@ def _edit_message(payload, message_id):
             retry_after = response.json()['retry_after']
             print(f"discord: rate limited, retrying after { retry_after } seconds")
             sleep(retry_after)
-            _create_message(payload)
+            _edit_message(payload, message_id)
 
         assert response.status_code == 200      
 
