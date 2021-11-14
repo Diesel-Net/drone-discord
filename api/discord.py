@@ -3,7 +3,6 @@ import requests
 from datetime import datetime
 from api.mongo import get_db
 
-
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_CHANNEL_ID = os.getenv('DISCORD_CHANNEL_ID')
 DISCORD_API_BASE_URL = os.getenv('DISCORD_API_BASE_URL') or 'https://discord.com/api'
@@ -14,9 +13,9 @@ HEADERS = {
 }
 
 COLORS = {
-    'green': 0x6bcf00,
+    'green': 0x25c710,
     'yellow': 0xddb231,
-    'red': 0xd94848,
+    'red': 0xc51b1b,
     'blue': 0x21b7fd,
 }
 
@@ -41,6 +40,7 @@ def _create_message(payload):
 
     return response
 
+
 def _edit_message(payload, message_id):
     try:
         response = requests.patch(
@@ -57,6 +57,7 @@ def _edit_message(payload, message_id):
 
     return response
 
+
 def post_user_created(request):
     
     user = request.get('user')
@@ -66,9 +67,9 @@ def post_user_created(request):
         'embeds': [
             {
                 "type": "rich",
-                "title": 'User created',
-                "description": 'A new user was created',
-                "color": COLORS['green'],
+                "title": f"Hello, { user.get('login') }",
+                "description": 'User created',
+                "color": COLORS['blue'],
                 "fields": [
                     {
                       "name": 'username',
@@ -90,11 +91,6 @@ def post_user_created(request):
                       "value": 'Admin' if user.get('admin') else 'Member',
                       "inline": True
                     },
-                    {
-                      "name": 'created',
-                      "value": f"{datetime.fromtimestamp(user.get('created')):%m-%d-%Y }",
-                      "inline": True,
-                    },
                 ],
                 "thumbnail": {
                     "url": user.get('avatar'),
@@ -102,7 +98,7 @@ def post_user_created(request):
                     "width": 0
                 },
                 "footer": {
-                    "text": system.get('host'),
+                    "text": f"v{ system.get('version') }",
                     "icon_url": f"{ system.get('link') }/favicon.png"
                 },
                 "url": f"{ system.get('link') }/settings/users"
@@ -120,9 +116,9 @@ def post_user_deleted(request):
         'embeds': [
             {
                 "type": "rich",
-                "title": 'User deleted',
-                "description": 'A user was deleted',
-                "color": COLORS['red'],
+                "title": f"Goodbye, { user.get('login') }",
+                "description": 'User deleted',
+                "color": COLORS['blue'],
                 "fields": [
                     {
                       "name": 'username',
@@ -144,12 +140,6 @@ def post_user_deleted(request):
                       "value": 'Admin' if user.get('admin') else 'Member',
                       "inline": True
                     },
-                    {
-                      "name": 'created',
-                      "value": f"{datetime.fromtimestamp(user.get('created')):%m-%d-%Y }" if user.get('created') else '',
-                      "inline": True,
-                    },
-                    
                 ],
                 "thumbnail": {
                     "url": user.get('avatar'),
@@ -157,7 +147,7 @@ def post_user_deleted(request):
                     "width": 0
                 },
                 "footer": {
-                    "text": system.get('host'),
+                    "text": f"v{ system.get('version') }",
                     "icon_url": f"{ system.get('link') }/favicon.png"
                 },
                 "url": f"{ system.get('link') }/settings/users"
@@ -176,26 +166,46 @@ def post_repo_enabled(request):
         'embeds': [
             {
                 "type": "rich",
-                "title": f"{repo.get('slug')} Enabled",
-                "description": 'Repository activated',
+                "title": repo.get('slug'),
+                "description": 'Repository enabled\n',
                 "color": COLORS['blue'],
                 "fields": [
                     {
-                      "name": 'default branch',
-                      "value": repo.get('default_branch'),
+                      "name": 'Config',
+                      "value": repo.get('config_path'),
+                      "inline": True
+                    },
+                    {
+                      "name": 'Protected',
+                      "value": 'yes' if repo.get('protected') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": 'Trusted',
+                      "value": 'yes' if repo.get('trusted') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": 'Ignore Forks',
+                      "value": 'yes' if repo.get('ignore_forks') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": "Ignore PR's",
+                      "value": 'yes' if repo.get('ignore_pull_requests') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": 'Repository',
+                      "value": f"[Open in GitHub]({ repo.get('link') })",
                       "inline": True
                     },
                 ],
-                "thumbnail": {
-                    "url": user.get('avatar'),
-                    "height": 0,
-                    "width": 0
-                },
                 "footer": {
-                    "text": system.get('host'),
+                    "text": f"v{ system.get('version') }",
                     "icon_url": f"{ system.get('link') }/favicon.png"
                 },
-                "url": f"{ repo.get('link') }"
+                "url": f"{ system.get('link') }/{ repo.get('slug') }"
             }
         ]
     }
@@ -203,7 +213,57 @@ def post_repo_enabled(request):
 
 
 def post_repo_disabled(request):
-    pass
+    repo = request.get('repo')
+    system = request.get('system')
+
+    payload = {
+        'embeds': [
+            {
+                "type": "rich",
+                "title": repo.get('slug'),
+                "description": 'Repository disabled\n',
+                "color": COLORS['blue'],
+                "fields": [
+                    {
+                      "name": 'Config',
+                      "value": repo.get('config_path'),
+                      "inline": True
+                    },
+                    {
+                      "name": 'Protected',
+                      "value": 'yes' if repo.get('protected') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": 'Trusted',
+                      "value": 'yes' if repo.get('trusted') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": 'Ignore Forks',
+                      "value": 'yes' if repo.get('ignore_forks') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": "Ignore PR's",
+                      "value": 'yes' if repo.get('ignore_pull_requests') else 'no',
+                      "inline": True
+                    },
+                    {
+                      "name": 'Repository',
+                      "value": f"[Open in GitHub]({ repo.get('link') })",
+                      "inline": True
+                    },
+                ],
+                "footer": {
+                    "text": f"v{ system.get('version') }",
+                    "icon_url": f"{ system.get('link') }/favicon.png"
+                },
+                "url": f"{ system.get('link') }/{ repo.get('slug') }"
+            }
+        ]
+    }
+    _create_message(payload)
 
 
 def post_build_created(request):
