@@ -308,7 +308,7 @@ def post_build_created(current_app, payload):
                 },
                 {
                   "name": 'Trigger',
-                  "value": build.get('trigger'),
+                  "value": build.get('trigger').replace('@hook', 'webhook'),
                   "inline": True,
                 },
                 {
@@ -392,7 +392,7 @@ def post_build_updated(current_app, payload):
                 },
                 {
                   "name": 'Trigger',
-                  "value": build.get('trigger'),
+                  "value": build.get('trigger').replace('@hook', 'webhook'),
                   "inline": True,
                 },
                 {
