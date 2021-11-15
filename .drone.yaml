@@ -8,7 +8,7 @@ clone:
 
 steps:
 
-  - name: docker build and push
+  - name: docker build and push (development)
     image: plugins/docker
     settings:
       dockerfile: server.Dockerfile
@@ -22,6 +22,27 @@ steps:
       repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-server
       tags:
         - ${DRONE_BRANCH}-latest
+    when:
+      branch:
+        - development
+
+  - name: docker build and push (production)
+    image: plugins/docker
+    settings:
+      dockerfile: server.Dockerfile
+      mirror: dockerhub.nexus.diesel.net
+      registry: docker.nexus.diesel.net
+      purge: no
+      username:
+        from_secret: nexus_user
+      password:
+        from_secret: nexus_pass
+      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-server
+      tags:
+        - production-latest
+    when:
+      branch:
+        - stable
 
 trigger:
   branch:
@@ -41,7 +62,7 @@ clone:
 
 steps:
 
-  - name: docker build and push
+  - name: docker build and push (development)
     image: plugins/docker
     settings:
       dockerfile: client.Dockerfile
@@ -55,6 +76,27 @@ steps:
       repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-client
       tags:
         - ${DRONE_BRANCH}-latest
+    when:
+      branch:
+        - development
+
+  - name: docker build and push (production)
+    image: plugins/docker
+    settings:
+      dockerfile: server.Dockerfile
+      mirror: dockerhub.nexus.diesel.net
+      registry: docker.nexus.diesel.net
+      purge: no
+      username:
+        from_secret: nexus_user
+      password:
+        from_secret: nexus_pass
+      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-server
+      tags:
+        - production-latest
+    when:
+      branch:
+        - stable
 
 trigger:
   branch:
@@ -97,6 +139,7 @@ steps:
         from_secret: mongo_initdb_root_password
     settings:
       inventory: .ansible/inventories/production
+      extra_vars: version=production
       galaxy: .ansible/roles/requirements.yaml
       playbook: .ansible/deploy.yaml
       private_key:
