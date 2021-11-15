@@ -282,13 +282,13 @@ def post_build_created(current_app, payload):
             "color": BUILD_STATUS_COLOR.get(status),
             "fields": [
                 {
-                  "name": 'Repository',
-                  "value": f"[GitHub]({repo.get('link')})",
+                  "name": 'Build',
+                  "value": build.get('number'),
                   "inline": True,
                 },
                 {
-                  "name": 'Build',
-                  "value": build.get('number'),
+                  "name": 'Trigger',
+                  "value": build.get('trigger').replace('@hook', 'webhook'),
                   "inline": True,
                 },
                 {
@@ -297,8 +297,8 @@ def post_build_created(current_app, payload):
                   "inline": True,
                 },
                 {
-                  "name": 'Trigger',
-                  "value": build.get('trigger').replace('@hook', 'webhook'),
+                  "name": 'Repository',
+                  "value": f"[GitHub]({repo.get('link')})",
                   "inline": True,
                 },
                 {
@@ -366,13 +366,13 @@ def post_build_updated(current_app, payload):
             "color": BUILD_STATUS_COLOR.get(status),
             "fields": [
                 {
-                  "name": 'Repository',
-                  "value": f"[GitHub]({repo.get('link')})",
+                  "name": 'Build',
+                  "value": build.get('number'),
                   "inline": True,
                 },
                 {
-                  "name": 'Build',
-                  "value": build.get('number'),
+                  "name": 'Trigger',
+                  "value": build.get('trigger').replace('@hook', 'webhook'),
                   "inline": True,
                 },
                 {
@@ -381,8 +381,8 @@ def post_build_updated(current_app, payload):
                   "inline": True,
                 },
                 {
-                  "name": 'Trigger',
-                  "value": build.get('trigger').replace('@hook', 'webhook'),
+                  "name": 'Repository',
+                  "value": f"[GitHub]({repo.get('link')})",
                   "inline": True,
                 },
                 {
