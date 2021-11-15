@@ -409,9 +409,9 @@ def post_build_updated(current_app, payload):
         })
 
         if status == 'failure':
-            payload['embeds']['color'] = COLORS['red']
+            payload['embeds'][0]['color'] = COLORS['red']
         if status == 'success':
-             payload['embeds']['color'] = COLORS['green']
+             payload['embeds'][0]['color'] = COLORS['green']
 
         with current_app.app_context():
             database = get_database()
