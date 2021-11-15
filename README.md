@@ -40,6 +40,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
       - HTTP GET
       - Used by both docker and the client service
   - Data persistence
+    - MongoDB
     - Drone events states?
     - Discord message ID's
     - Use [`PyMongo`](https://pymongo.readthedocs.io/en/stable/) to talk to MongoDB instance
@@ -59,26 +60,6 @@ It might be worth pointing out that this service is currently leveraging [`disco
   - Configuration
     - Discord bot token
     - Healthcheck URL
-
-- Logic
-  - Create a new message on every new drone build
-    - "Build started"
-      - Yellow
-      - spinning wheel emoji while build is in progress?
-  - Edit same message with build status
-    - "Build success"
-      - Green
-      - Green checkmark emoji?
-    - "Build failure"
-      - Red
-      - Red X emoji?
-  - Other metadata/fields to embed?
-    - repo name
-    - build number
-    - version (branch, tag, commit)
-    - link to build in drone
-    - build time (how long did build take)
-    - others?
 
 
 ## Toolchain
