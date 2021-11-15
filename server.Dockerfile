@@ -1,7 +1,5 @@
 FROM python:3.9
 
-RUN break_pipeline
-
 RUN pip3 install --upgrade pip \
 && pip3 install --upgrade setuptools \
 && pip3 install --upgrade wheel
