@@ -2,8 +2,7 @@ import os
 import requests
 from datetime import datetime
 from time import sleep
-from api.mongo import get_db
-
+from api.mongo import get_database
 
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_CHANNEL_ID = os.getenv('DISCORD_CHANNEL_ID')
@@ -23,6 +22,7 @@ COLORS = {
 
 
 def _create_message(payload):
+    response = None
     try:
         response = requests.post(
             headers = HEADERS,
@@ -37,14 +37,18 @@ def _create_message(payload):
             sleep(retry_after)
             _create_message(payload)
         
-        assert response.status_code == 200     
+        assert response.status_code == 200
+        response = response.json()     
 
     except Exception as ex:
         print(ex)
         print('discord: create_message() failure')
 
+    return response
 
-def _edit_message(payload, message_id):
+
+def _edit_message(message_id, payload):
+    response = None
     try:
         response = requests.patch(
             headers = HEADERS,
@@ -59,16 +63,19 @@ def _edit_message(payload, message_id):
             sleep(retry_after)
             _edit_message(payload, message_id)
 
-        assert response.status_code == 200      
+        assert response.status_code == 200 
+        response = response.json()     
 
     except Exception as ex:
         print(ex)
         print('discord: edit_message() failure')
 
+    return response
 
-def post_user_created(request):
-    user = request.get('user')
-    system = request.get('system')
+
+def post_user_created(current_app, payload):
+    user = payload.get('user')
+    system = payload.get('system')
 
     _create_message({
         'embeds': [{
@@ -112,9 +119,9 @@ def post_user_created(request):
     })
 
 
-def post_user_deleted(request):
-    user = request.get('user')
-    system = request.get('system')
+def post_user_deleted(current_app, payload):
+    user = payload.get('user')
+    system = payload.get('system')
 
     _create_message({
         'embeds': [{
@@ -158,10 +165,10 @@ def post_user_deleted(request):
     })
 
 
-def post_repo_enabled(request):
-    user = request.get('user')
-    repo = request.get('repo')
-    system = request.get('system')
+def post_repo_enabled(current_app, payload):
+    user = payload.get('user')
+    repo = payload.get('repo')
+    system = payload.get('system')
 
     _create_message({
         'embeds': [{
@@ -210,9 +217,9 @@ def post_repo_enabled(request):
     })
 
 
-def post_repo_disabled(request):
-    repo = request.get('repo')
-    system = request.get('system')
+def post_repo_disabled(current_app, payload):
+    repo = payload.get('repo')
+    system = payload.get('system')
 
     _create_message({
         'embeds': [{
@@ -260,12 +267,120 @@ def post_repo_disabled(request):
         }]
     })
 
+def post_build_created(current_app, payload):
+    user = payload.get('user')
+    repo = payload.get('repo')
+    build = payload.get('build')
+    system = payload.get('system')
 
-def post_build_created(request):
-    # TODO
-    pass
+    version = build.get('ref').split('/').pop()
+
+    response = _create_message({
+        'embeds': [{
+            "type": "rich",
+            "title": f"Build Queued",
+            "url": f"{ system.get('link') }/settings/users",
+            "description": 'User created',
+            "color": COLORS['blue'],
+            "fields": [
+                {
+                  "name": 'Repository',
+                  "value": f"[{ repo.get('slug') }]({repo.get('link')})",
+                  "inline": True,
+                },
+                {
+                  "name": 'Build',
+                  "value": build.get('number'),
+                  "inline": True,
+                },
+                {
+                  "name": 'Version',
+                  "value": f"[{ version }]({repo.get('link')}/tree/{ version })",
+                  "inline": True,
+                },
+                {
+                  "name": 'Status',
+                  "value": build.get('status'),
+                  "inline": True,
+                },
+            ],
+            "thumbnail": {
+                "url": user.get('avatar'),
+                "height": 0,
+                "width": 0,
+            },
+            "footer": {
+                "text": f"v{ system.get('version') }",
+                "icon_url": f"{ system.get('link') }/favicon.png",
+            },
+        }]
+    })
+
+    with current_app.app_context():
+        database = get_database()
+        database.message.insert_one({
+            'buildId': build.get('id'),
+            'id': response.get('id'),
+        })
 
 
-def post_build_updated(request):
-    # TODO
-    pass
+def post_build_updated(current_app, payload):
+    repo = payload.get('repo')
+    build = payload.get('build')
+    system = payload.get('system')
+
+    with current_app.app_context():
+        database = get_database()
+        message = database.message.find_one({
+            'buildId': build.get('id'),
+        })
+
+    version = build.get('ref').split('/').pop()
+
+    _edit_message(message['id'], {
+        'embeds': [{
+            "type": "rich",
+            "title": f"Build Updated",
+            "url": f"{ system.get('link') }/settings/users",
+            "description": 'User created',
+            "color": COLORS['blue'],
+            "fields": [
+                {
+                  "name": 'Repository',
+                  "value": f"[{ repo.get('slug') }]({repo.get('link')})",
+                  "inline": True,
+                },
+                {
+                  "name": 'Build',
+                  "value": build.get('number'),
+                  "inline": True,
+                },
+                {
+                  "name": 'Version',
+                  "value": f"[{ version }]({repo.get('link')}/tree/{ version })",
+                  "inline": True,
+                },
+                {
+                  "name": 'Status',
+                  "value": build.get('status'),
+                  "inline": True,
+                },
+                {
+                  "name": 'Duration',
+                  "value": 'TODO...',
+                  "inline": True,
+                },
+            ],
+            "footer": {
+                "text": f"v{ system.get('version') }",
+                "icon_url": f"{ system.get('link') }/favicon.png",
+            },
+        }]
+    })
+
+    if build.get('finished'):
+        with current_app.app_context():
+            database = get_database()
+            database.message.delete_one({
+                'buildId': build.get('id'),
+            })

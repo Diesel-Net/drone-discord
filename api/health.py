@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from api.mongo import get_db
+from api.mongo import get_database
 from datetime import datetime
 
 health_check = Blueprint('health-check', __name__, url_prefix='')
@@ -13,7 +13,7 @@ def get_health():
         'timestamp': timestamp,
         'userAgent': user_agent,
     }
-    database = get_db() 
+    database = get_database() 
     database.health.insert_one(record)
     database.health.delete_one({'timestamp': timestamp})
     return { 'message': 'Healthy',

@@ -9,7 +9,7 @@ from flask.cli import with_appcontext
 from gridfs import GridFS
 
 
-def get_db():
+def get_database():
     """Connect to the application's configured database. The connection
     is unique for each request and will be reused if this is called
     again.
@@ -23,15 +23,17 @@ def get_db():
         )
         g.db = g.client[os.getenv('MONGO_DATABASE')]
         g.fs = GridFS(g.db)
+
         print(
             f"Mongo: Connecting to `{os.getenv('MONGO_DATABASE')}`"
             f" at ({ os.getenv('MONGO_HOST') }"
             f":{ os.getenv('MONGO_PORT') })"
         )
+        
     return g.db
 
 
-def close_db(e=None):
+def close_database(e=None):
     """If this request connected to the database, close the
     connection.
     """
@@ -41,11 +43,11 @@ def close_db(e=None):
         print('Mongo: Database closed')
 
 
-def init_db(data=None):
+def init_database(data=None):
     """Create new database file and optionally pre-load json data."""
-    get_db()
+    get_database()
     g.client.drop_database(os.getenv('MONGO_DATABASE'))
-    db = get_db()
+    db = get_database()
     if data != None:
         for key in  data:
             # create collections as defined as "keys" in top level json object
@@ -55,20 +57,20 @@ def init_db(data=None):
 @click.command('init-db')
 @click.argument('filename', type=click.Path(exists=True), required=False)
 @with_appcontext
-def init_db_command(filename=None):
+def init_database_command(filename=None):
     """Create new database file and optionally pre-load json data."""
 
     if filename == None:
-        init_db()
+        init_database()
     else:
         with open(filename, "rb") as fh:
-            init_db(json_util.loads(fh.read()))
+            init_database(json_util.loads(fh.read()))
     print('Mongo: Database initialized')
 
 
-def register_db(app):
+def register_database(app):
     """Register database functions with the Flask app. This is called by
     the application factory.
     """
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+    app.teardown_appcontext(close_database)
+    app.cli.add_command(init_database_command)

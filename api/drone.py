@@ -8,8 +8,8 @@ from copy import deepcopy
 from threading import Thread
 from datetime import datetime
 from base64 import b64encode
-from flask import Blueprint, request
-from api.mongo import get_db
+from flask import Blueprint, request, current_app
+from api.mongo import get_database
 from api import discord
 
 
@@ -53,17 +53,17 @@ def _calculate_signature(key, signing_string):
     return hmac.new(key, signing_string, hashlib.sha256).digest()
 
 
-def _verify_signature(key):
+def _verify_signature(key, headers):
     # https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12#section-2.5
     expected = re.search(
         r'^.*signature=\"([a-zA-Z1-9\/\+\=].*?)\"', 
-        request.headers['Signature']
+        headers.get('Signature')
     ).group(1)
 
     calculated = b64encode(
         _calculate_signature(
             key.encode(),
-            _construct_signature_string(request.headers).encode(),
+            _construct_signature_string(headers).encode(),
         )
     ).decode()
     
@@ -75,14 +75,14 @@ def _verify_signature(key):
 
 @drone_events.route('/', methods=['POST'])
 def post_events():
-    print(f'{ request.headers }')
-    print(f'{ json.dumps(request.json, indent=2) }')
+    print(request.headers)
+    print(json.dumps(request.json, indent=2))
     
-    response = { 'timestamp': datetime.utcnow()}
+    response = { 'timestamp': datetime.utcnow() }
     event = request.headers.get('X-Drone-Event')
     action = DRONE_EVENT_HANDLERS.get(event).get(request.json['action'])
 
-    if not _verify_signature(KEY):
+    if not _verify_signature(KEY, request.headers):
         response['message'] = 'Invalid signature'
         return response, 403
 
@@ -92,8 +92,13 @@ def post_events():
 
     Thread(
         target=action, 
-        args=[deepcopy(request.json)]
+        kwargs={
+            'current_app': current_app._get_current_object(),
+            'payload': deepcopy(request.json),
+        },
     ).start()
+
+    #action(request.json)
     response['message'] = 'Job queued'
 
     return response, 200

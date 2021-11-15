@@ -1,6 +1,6 @@
 from flask import Flask
 from api.drone import drone_events
-from api.mongo import register_db
+from api.mongo import register_database
 from api.health import health_check
 
 # we want the configuration passed in as a parameter here so that we
@@ -11,7 +11,7 @@ def create_app():
     app = Flask(__name__)
 
     # register the database and it's cli commands
-    register_db(app)
+    register_database(app)
 
     # register listening endpoints
     app.register_blueprint(drone_events)
