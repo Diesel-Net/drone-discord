@@ -338,11 +338,11 @@ def post_build_updated(current_app, payload):
     status = build.get('status')
     version = build.get('ref').split('/').pop()
     color = COLORS['yellow']
+    duration = 0
 
-    if status != 'running':
-        duration = 
+    # if status != 'running':
+    #     duration = 
 
-    
     if status == 'failure':
         color = COLORS['red']
     if status == 'success':
@@ -351,7 +351,7 @@ def post_build_updated(current_app, payload):
     _edit_message(message['id'], {
         'embeds': [{
             "type": "rich",
-            "title": repo.get('slug'),
+            "title": f"{ repo.get('slug') } #{ build.get('number') }",
             "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
             "description": build.get('message'),
             "color": color,
