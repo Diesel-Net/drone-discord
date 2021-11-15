@@ -1,0 +1,1 @@
+server_host: '{{ lookup("env", "SERVER_HOST") }}'

@@ -1,0 +1,111 @@
+---
+kind: pipeline
+type: docker
+name: Build Server
+
+clone:
+  depth: 1
+
+steps:
+
+  - name: docker build and push
+    image: plugins/docker
+    settings:
+      dockerfile: server.Dockerfile
+      mirror: dockerhub.nexus.diesel.net
+      registry: docker.nexus.diesel.net
+      purge: no
+      username:
+        from_secret: nexus_user
+      password:
+        from_secret: nexus_pass
+      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-server
+      tags:
+        - ${DRONE_BRANCH}-latest
+
+trigger:
+  branch:
+    - development
+    - stable
+  event:
+    - push
+
+---
+
+kind: pipeline
+type: docker
+name: Build Client
+
+clone:
+  depth: 1
+
+steps:
+
+  - name: docker build and push
+    image: plugins/docker
+    settings:
+      dockerfile: client.Dockerfile
+      mirror: dockerhub.nexus.diesel.net
+      registry: docker.nexus.diesel.net
+      purge: no
+      username:
+        from_secret: nexus_user
+      password:
+        from_secret: nexus_pass
+      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-client
+      tags:
+        - ${DRONE_BRANCH}-latest
+
+trigger:
+  branch:
+    - development
+    - stable
+  event:
+    - push
+
+---
+kind: pipeline
+type: docker
+name: Deploy
+
+clone:
+  depth: 1
+
+depends_on:
+  - 'Build Server'
+  - 'Build Client'
+
+steps:
+
+  - name: configure and deploy (docker swarm)
+    image: plugins/ansible:3
+    environment:
+      ANSIBLE_CONFIG: .ansible/ansible.cfg
+      DRONE_WEBHOOK_SECRET:
+        from_secret: drone_webhook_secret
+      DISCORD_TOKEN:
+        from_secret: discord_token
+      DISCORD_CHANNEL_ID:
+        from_secret: discord_channel_id
+      SERVER_HOST:
+        from_secret: server_host
+      MONGO_PORT_EXPOSED:
+        from_secret: mongo_port_exposed
+      MONGO_INITDB_ROOT_USERNAME:
+        from_secret: mongo_initdb_root_username
+      MONGO_INITDB_ROOT_PASSWORD:
+        from_secret: mongo_initdb_root_password
+    settings:
+      inventory: .ansible/inventories/production
+      galaxy: .ansible/roles/requirements.yaml
+      playbook: .ansible/deploy.yaml
+      private_key:
+        from_secret: automation_id_rsa
+
+trigger:
+  branch:
+    - stable
+  event:
+    - push
+
+...

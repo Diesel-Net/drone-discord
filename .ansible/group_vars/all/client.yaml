@@ -1,0 +1,2 @@
+healthcheck_url: 'https://{{ server_host }}/health'
+healthcheck_interval: 10 # seconds
