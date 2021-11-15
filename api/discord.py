@@ -1,6 +1,6 @@
 import os
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import sleep
 from api.mongo import get_database
 
@@ -13,11 +13,17 @@ HEADERS = {
     'Authorization': f'Bot { DISCORD_TOKEN }'
 }
 
-COLORS = {
+COLOR = {
     'green': 0x42c768,
     'yellow': 0xddb231,
     'red': 0xbb3030,
     'blue': 0x21b7fd,
+}
+
+BUILD_STATUS_COLOR = {
+    'pending': COLOR['yellow'],
+    'success': COLOR['green'],
+    'failure': COLOR['red'],
 }
 
 
@@ -83,7 +89,7 @@ def post_user_created(current_app, payload):
             "title": f"Hello, { user.get('login') }",
             "url": f"{ system.get('link') }/settings/users",
             "description": 'User created',
-            "color": COLORS['blue'],
+            "color": COLOR['blue'],
             "fields": [
                 {
                   "name": 'username',
@@ -129,7 +135,7 @@ def post_user_deleted(current_app, payload):
             "title": f"Goodbye, { user.get('login') }",
             "url": f"{ system.get('link') }/settings/users",
             "description": 'User deleted',
-            "color": COLORS['blue'],
+            "color": COLOR['blue'],
             "fields": [
                 {
                   "name": 'username',
@@ -176,7 +182,7 @@ def post_repo_enabled(current_app, payload):
             "title": repo.get('slug'),
             "url": f"{ system.get('link') }/{ repo.get('slug') }/settings",
             "description": 'Repository enabled\n',
-            "color": COLORS['blue'],
+            "color": COLOR['blue'],
             "fields": [
                 {
                   "name": 'Repository',
@@ -227,7 +233,7 @@ def post_repo_disabled(current_app, payload):
             "title": repo.get('slug'),
             "url": f"{ system.get('link') }/{ repo.get('slug') }/settings",
             "description": 'Repository disabled\n',
-            "color": COLORS['blue'],
+            "color": COLOR['blue'],
             "fields": [
                 {
                   "name": 'Repository',
@@ -281,7 +287,7 @@ def post_build_created(current_app, payload):
             "title": f"{ repo.get('slug') } #{ build.get('number') }",
             "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
             "description": build.get('message'),
-            "color": COLORS['blue'],
+            "color": COLOR['blue'],
             "fields": [
                 {
                   "name": 'Repository',
@@ -326,10 +332,6 @@ def post_build_created(current_app, payload):
 
 
 def post_build_updated(current_app, payload):
-    # TODO: Getting rate limited on failure jobs. look into that
-    # TODO: duration calculation
-    # TODO: healthcheck always returning 200 due to coming-soon page
-    
     repo = payload.get('repo')
     build = payload.get('build')
     system = payload.get('system')
@@ -342,19 +344,14 @@ def post_build_updated(current_app, payload):
             'id': build_id,
         })
 
-        if message.get('status') == status:
-            # no change
-            return
+        if message.get('status') != status:
+            database.build.update_one(message,{'$set':{'status':status}})
         else:
-            database.build.update_one(message,{
-                '$set' : {
-                    'status' : status,
-                }
-            })
+             # no change, do nothing
+            return
 
     
     version = build.get('ref').split('/').pop()
-    color = COLORS['yellow']
     started = build.get('started')
     finished = build.get('finished')
 
@@ -364,7 +361,7 @@ def post_build_updated(current_app, payload):
             "title": f"{ repo.get('slug') } #{ build.get('number') }",
             "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
             "description": build.get('message'),
-            "color": COLORS['yellow'],
+            "color": BUILD_STATUS_COLOR.get(status),
             "fields": [
                 {
                   "name": 'Repository',
@@ -404,20 +401,14 @@ def post_build_updated(current_app, payload):
 
         payload['embeds'][0]['fields'].append({
             'name': 'Duration',
-            'value': duration,
+            'value': str(timedelta(seconds=duration)),
             'inline': True,
         })
-
-        if status == 'failure':
-            payload['embeds'][0]['color'] = COLORS['red']
-        if status == 'success':
-             payload['embeds'][0]['color'] = COLORS['green']
 
         with current_app.app_context():
             database = get_database()
             database.message.delete_one({
                 'buildId': build.get('id'),
             })
-
 
     _edit_message(message['messageId'], payload)
