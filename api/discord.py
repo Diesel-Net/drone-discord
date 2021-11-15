@@ -178,7 +178,7 @@ def post_repo_enabled(current_app, payload):
                 {
                   "name": 'Repository',
                   "value": f"[GitHub]({ repo.get('link') })",
-                  "inline": False,
+                  "inline": True,
                 },
                 {
                   "name": 'Config',
@@ -229,7 +229,7 @@ def post_repo_disabled(current_app, payload):
                 {
                   "name": 'Repository',
                   "value": f"[GitHub]({ repo.get('link') })",
-                  "inline": False,
+                  "inline": True,
                 },
                 {
                   "name": 'Config',
