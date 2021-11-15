@@ -300,6 +300,16 @@ def post_build_created(current_app, payload):
                   "inline": True,
                 },
                 {
+                  "name": 'Event',
+                  "value": build.get('event'),
+                  "inline": True,
+                },
+                {
+                  "name": 'Trigger',
+                  "value": build.get('trigger'),
+                  "inline": True,
+                },
+                {
                   "name": 'Version',
                   "value": f"[{ version }]({repo.get('link')}/tree/{ version })",
                   "inline": True,
@@ -371,6 +381,16 @@ def post_build_updated(current_app, payload):
                 {
                   "name": 'Build',
                   "value": build.get('number'),
+                  "inline": True,
+                },
+                {
+                  "name": 'Event',
+                  "value": build.get('event'),
+                  "inline": True,
+                },
+                {
+                  "name": 'Trigger',
+                  "value": build.get('trigger'),
                   "inline": True,
                 },
                 {
