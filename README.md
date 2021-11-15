@@ -1,10 +1,10 @@
 [![Build Status](https://drone.kiwi-labs.net/api/badges/Diesel-Net/drone-discord/status.svg)](https://drone.kiwi-labs.net/Diesel-Net/drone-discord)
 
-[!build_pending](screenshots/build_pending.png)
+![build_pending](screenshots/build_pending.png)
 
-[!build_success](screenshots/build_success.png)
+![build_success](screenshots/build_success.png)
 
-[!build_failure](screenshots/build_failure.png)
+![build_failure](screenshots/build_failure.png)
 
 # drone-discord
 #### **Summary**
