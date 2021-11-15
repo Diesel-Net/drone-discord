@@ -71,7 +71,7 @@ It might be worth pointing out that this service is currently leveraging [`disco
 
 
 ## Deployments
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed onto docker swarm, and automated with Drone and Ansible.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, and automated with Drone and Ansible.
 A convenience script is provided to invoke the ansible playbook manually if needed. You will need to ensure a proper SSH configuration and have a [default Ansible vault password set](https://docs.ansible.com/ansible/latest/user_guide/vault.html#setting-a-default-password-source). Please see [deploy.sh](deploy.sh) for hints.
 ```bash
 source deploy.sh
