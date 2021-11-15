@@ -318,44 +318,54 @@ def post_build_created(current_app, payload):
 
     with current_app.app_context():
         database = get_database()
-        database.message.insert_one({
-            'buildId': build.get('id'),
-            'id': response.get('id'),
+        database.build.insert_one({
+            'id': build.get('id'),
+            'status': build.get('status'),
+            'messageId': response.get('id'),
         })
 
 
 def post_build_updated(current_app, payload):
+    # TODO: Getting rate limited on failure jobs. look into that
+    # TODO: duration calculation
+    # TODO: healthcheck always returning 200 due to coming-soon page
+    
     repo = payload.get('repo')
     build = payload.get('build')
     system = payload.get('system')
+    status = build.get('status')
+    build_id = build.get('id')
 
     with current_app.app_context():
         database = get_database()
-        message = database.message.find_one({
-            'buildId': build.get('id'),
+        message = database.build.find_one({
+            'id': build_id,
         })
 
-    status = build.get('status')
+        if message.get('status') == status:
+            # no change
+            return
+        else:
+            database.build.update_one(message,{
+                '$set' : {
+                    'status' : status,
+                }
+            })
+
+    
     version = build.get('ref').split('/').pop()
     color = COLORS['yellow']
-    duration = 0
+    started = build.get('started')
+    finished = build.get('finished')
 
-    # if status != 'running':
-    #     duration = 
-
-    if status == 'failure':
-        color = COLORS['red']
-    if status == 'success':
-        color = COLORS['green']
-
-    _edit_message(message['id'], {
+    payload = {
         'embeds': [{
             "type": "rich",
             "title": f"{ repo.get('slug') } #{ build.get('number') }",
             "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
             "description": build.get('message'),
-            "color": color,
-           "fields": [
+            "color": COLORS['yellow'],
+            "fields": [
                 {
                   "name": 'Repository',
                   "value": f"[GitHub]({repo.get('link')})",
@@ -387,11 +397,27 @@ def post_build_updated(current_app, payload):
                 "icon_url": f"{ system.get('link') }/favicon.png",
             },
         }]
-    })
+    }
 
-    if build.get('finished'):
+    if finished:
+        duration = finished - started
+
+        payload['embeds'][0]['fields'].append({
+            'name': 'Duration',
+            'value': duration,
+            'inline': True,
+        })
+
+        if status == 'failure':
+            payload['embeds']['color'] = COLORS['red']
+        if status == 'success':
+             payload['embeds']['color'] = COLORS['green']
+
         with current_app.app_context():
             database = get_database()
             database.message.delete_one({
                 'buildId': build.get('id'),
             })
+
+
+    _edit_message(message['messageId'], payload)
