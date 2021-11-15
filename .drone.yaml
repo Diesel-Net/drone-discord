@@ -83,7 +83,7 @@ steps:
   - name: docker build and push (production)
     image: plugins/docker
     settings:
-      dockerfile: server.Dockerfile
+      dockerfile: client.Dockerfile
       mirror: dockerhub.nexus.diesel.net
       registry: docker.nexus.diesel.net
       purge: no
