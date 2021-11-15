@@ -98,11 +98,6 @@ def post_user_created(current_app, payload):
                   "inline": True,
                 },
                 {
-                  "name": 'active',
-                  "value": 'yes' if user.get('active') else 'no',
-                  "inline": True,
-                },
-                {
                   "name": 'type',
                   "value": 'Machine' if user.get('machine') else 'User',
                   "inline": True,
@@ -141,11 +136,6 @@ def post_user_deleted(current_app, payload):
                 {
                   "name": 'username',
                   "value": user.get('login'),
-                  "inline": True,
-                },
-                {
-                  "name": 'active',
-                  "value": 'yes' if user.get('active') else 'no',
                   "inline": True,
                 },
                 {
