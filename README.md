@@ -1,6 +1,8 @@
 [![Build Status](https://drone.kiwi-labs.net/api/badges/Diesel-Net/drone-discord/status.svg)](https://drone.kiwi-labs.net/Diesel-Net/drone-discord)
 
+
 # drone-discord
+
 #### **Summary**
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A solution for posting [Drone](https://www.drone.io/)'s build logs to Discord. 
 Comprised of just 2 small main components, calling this a _bot_ seems like a bit of a stretch. 
@@ -17,6 +19,12 @@ It would have done the job just fine, however this was limited to only being abl
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For the other piece (optional), there is some minimal code hacked together with the sole purpose of connecting to the Gateway (WebSocket) API for being able to accurately reflect the bot user's _Online_ status. This client process periodically checks-in on the Rest API to make sure it's healthy and adjusts the bot user's online presence accordingly.
 It might be worth pointing out that this service is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is [no longer being maintained](https://gist.github.com/Rapptz/4a2f62751b9600a31a0d3c78100287f1), however I am confident that this _should_ still work for quite some time until Discord's Gateway API changes dramatically, for any reason. Thus an area of improvement could be to implement a lightweight Discord Websocket client from scratch, having only the features that it needs. 
 
+## Screenshots
+![build_pending](screenshots/build_pending.png)
+
+![build_success](screenshots/build_success.png)
+
+![build_failure](screenshots/build_failure.png)
 
 ## Implementation Notes
 
