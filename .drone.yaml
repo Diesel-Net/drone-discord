@@ -104,7 +104,6 @@ steps:
 
 trigger:
   branch:
-    - development
     - stable
   event:
     - push

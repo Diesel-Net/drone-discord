@@ -170,7 +170,7 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    ```
 
 #### Drone Events
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There should be a collection of test curls in the root of this repository. These are useful for simulating drone events when running locally.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There should be a collection of sample curls in the `test` folder in this repository. These are useful for simulating drone events when running locally.
 ```bash
 # user events
 source test/user_created.sh
