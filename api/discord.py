@@ -118,10 +118,10 @@ def post_user_created(current_app, payload):
                 "height": 0,
                 "width": 0,
             },
-            "footer": {
-                "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
-            },
+            # "footer": {
+            #     "text": f"v{ system.get('version') }",
+            #     "icon_url": f"{ system.get('link') }/favicon.png",
+            # },
         }]
     })
 
@@ -164,10 +164,10 @@ def post_user_deleted(current_app, payload):
                 "height": 0,
                 "width": 0,
             },
-            "footer": {
-                "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
-            },
+            # "footer": {
+            #     "text": f"v{ system.get('version') }",
+            #     "icon_url": f"{ system.get('link') }/favicon.png",
+            # },
         }]
     })
 
@@ -216,10 +216,10 @@ def post_repo_enabled(current_app, payload):
                   "inline": True,
                 },
             ],
-            "footer": {
-                "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
-            },
+            # "footer": {
+            #     "text": f"v{ system.get('version') }",
+            #     "icon_url": f"{ system.get('link') }/favicon.png",
+            # },
         }]
     })
 
@@ -267,10 +267,10 @@ def post_repo_disabled(current_app, payload):
                   "inline": True,
                 },
             ],
-            "footer": {
-                "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
-            },
+            # "footer": {
+            #     "text": f"v{ system.get('version') }",
+            #     "icon_url": f"{ system.get('link') }/favicon.png",
+            # },
         }]
     })
 
@@ -327,10 +327,10 @@ def post_build_created(current_app, payload):
                 "height": 0,
                 "width": 0,
             },
-            "footer": {
-                "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
-            },
+            # "footer": {
+            #     "text": f"v{ system.get('version') }",
+            #     "icon_url": f"{ system.get('link') }/favicon.png",
+            # },
         }]
     })
 
@@ -411,10 +411,10 @@ def post_build_updated(current_app, payload):
                 "height": 0,
                 "width": 0,
             },
-            "footer": {
-                "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
-            },
+            # "footer": {
+            #     "text": f"v{ system.get('version') }",
+            #     "icon_url": f"{ system.get('link') }/favicon.png",
+            # },
         }]
     }
 
