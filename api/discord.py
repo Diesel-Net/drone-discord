@@ -179,6 +179,11 @@ def post_repo_enabled(current_app, payload):
             "color": COLORS['blue'],
             "fields": [
                 {
+                  "name": 'Repository',
+                  "value": f"[GitHub]({ repo.get('link') })",
+                  "inline": False,
+                },
+                {
                   "name": 'Config',
                   "value": repo.get('config_path'),
                   "inline": True,
@@ -201,11 +206,6 @@ def post_repo_enabled(current_app, payload):
                 {
                   "name": "Ignore PR's",
                   "value": 'yes' if repo.get('ignore_pull_requests') else 'no',
-                  "inline": True,
-                },
-                {
-                  "name": 'Repository',
-                  "value": f"[link]({ repo.get('link') })",
                   "inline": True,
                 },
             ],
@@ -230,6 +230,11 @@ def post_repo_disabled(current_app, payload):
             "color": COLORS['blue'],
             "fields": [
                 {
+                  "name": 'Repository',
+                  "value": f"[GitHub]({ repo.get('link') })",
+                  "inline": False,
+                },
+                {
                   "name": 'Config',
                   "value": repo.get('config_path'),
                   "inline": True,
@@ -254,11 +259,6 @@ def post_repo_disabled(current_app, payload):
                   "value": 'yes' if repo.get('ignore_pull_requests') else 'no',
                   "inline": True,
                 },
-                {
-                  "name": 'Repository',
-                  "value": f"[link]({ repo.get('link') })",
-                  "inline": True,
-                },
             ],
             "footer": {
                 "text": f"v{ system.get('version') }",
@@ -278,14 +278,14 @@ def post_build_created(current_app, payload):
     response = _create_message({
         'embeds': [{
             "type": "rich",
-            "title": f"Build Queued",
-            "url": f"{ system.get('link') }/settings/users",
-            "description": 'User created',
+            "title": f"{ repo.get('slug') } #{ build.get('number') }",
+            "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
+            "description": build.get('message'),
             "color": COLORS['blue'],
             "fields": [
                 {
                   "name": 'Repository',
-                  "value": f"[{ repo.get('slug') }]({repo.get('link')})",
+                  "value": f"[GitHub]({repo.get('link')})",
                   "inline": True,
                 },
                 {
@@ -335,19 +335,30 @@ def post_build_updated(current_app, payload):
             'buildId': build.get('id'),
         })
 
+    status = build.get('status')
     version = build.get('ref').split('/').pop()
+    color = COLORS['yellow']
+
+    if status != 'running':
+        duration = 
+
+    
+    if status == 'failure':
+        color = COLORS['red']
+    if status == 'success':
+        color = COLORS['green']
 
     _edit_message(message['id'], {
         'embeds': [{
             "type": "rich",
-            "title": f"Build Updated",
-            "url": f"{ system.get('link') }/settings/users",
-            "description": 'User created',
-            "color": COLORS['blue'],
-            "fields": [
+            "title": repo.get('slug'),
+            "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
+            "description": build.get('message'),
+            "color": color,
+           "fields": [
                 {
                   "name": 'Repository',
-                  "value": f"[{ repo.get('slug') }]({repo.get('link')})",
+                  "value": f"[GitHub]({repo.get('link')})",
                   "inline": True,
                 },
                 {
@@ -365,12 +376,12 @@ def post_build_updated(current_app, payload):
                   "value": build.get('status'),
                   "inline": True,
                 },
-                {
-                  "name": 'Duration',
-                  "value": 'TODO...',
-                  "inline": True,
-                },
             ],
+            "thumbnail": {
+                "url": build.get('author_avatar'),
+                "height": 0,
+                "width": 0,
+            },
             "footer": {
                 "text": f"v{ system.get('version') }",
                 "icon_url": f"{ system.get('link') }/favicon.png",
