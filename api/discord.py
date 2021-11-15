@@ -21,7 +21,8 @@ COLOR = {
 }
 
 BUILD_STATUS_COLOR = {
-    'pending': COLOR['yellow'],
+    'pending': COLOR['blue'],
+    'running': COLOR['yellow'],
     'success': COLOR['green'],
     'failure': COLOR['red'],
 }
@@ -280,6 +281,7 @@ def post_build_created(current_app, payload):
     system = payload.get('system')
 
     version = build.get('ref').split('/').pop()
+    status = build.get('status')
 
     response = _create_message({
         'embeds': [{
@@ -287,7 +289,7 @@ def post_build_created(current_app, payload):
             "title": f"{ repo.get('slug') } #{ build.get('number') }",
             "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
             "description": build.get('message'),
-            "color": COLOR['blue'],
+            "color": BUILD_STATUS_COLOR.get(status),
             "fields": [
                 {
                   "name": 'Repository',
@@ -316,7 +318,7 @@ def post_build_created(current_app, payload):
                 },
                 {
                   "name": 'Status',
-                  "value": build.get('status'),
+                  "value": status,
                   "inline": True,
                 },
             ],
