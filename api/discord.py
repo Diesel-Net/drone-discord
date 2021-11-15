@@ -14,9 +14,9 @@ HEADERS = {
 }
 
 COLORS = {
-    'green': 0x25c710,
+    'green': 0x42c768,
     'yellow': 0xddb231,
-    'red': 0xc51b1b,
+    'red': 0xbb3030,
     'blue': 0x21b7fd,
 }
 
