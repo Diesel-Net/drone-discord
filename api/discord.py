@@ -270,25 +270,34 @@ def post_build_created(current_app, payload):
     build = payload.get('build')
     system = payload.get('system')
 
-    version = build.get('ref').split('/').pop()
     status = build.get('status')
+    build_id = build.get('id')
+    build_number = build.get('number')
+    started = build.get('started')
+    finished = build.get('finished')
+    trigger = build.get('trigger')
+    trigger = trigger.replace('@hook', 'webhook')
+    trigger = trigger.replace('@cron', build.get('cron'))
+    version = build.get('ref').split('/').pop()
+    slug = repo.get('slug')
+    link = repo.get('link')
 
     response = _create_message({
         'embeds': [{
             "type": "rich",
-            "title": f"{ repo.get('slug') } #{ build.get('number') }",
-            "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
+            "title": f"{ slug } #{ build_number }",
+            "url": f"{ link }/{ slug }/{ build_number }",
             "description": build.get('message'),
             "color": BUILD_STATUS_COLOR.get(status),
             "fields": [
                 {
                   "name": 'Build',
-                  "value": build.get('number'),
+                  "value": build_number,
                   "inline": True,
                 },
                 {
                   "name": 'Trigger',
-                  "value": build.get('trigger').replace('@hook', 'webhook'),
+                  "value": trigger,
                   "inline": True,
                 },
                 {
@@ -298,12 +307,12 @@ def post_build_created(current_app, payload):
                 },
                 {
                   "name": 'Repository',
-                  "value": f"[GitHub]({repo.get('link')})",
+                  "value": f"[GitHub]({ link })",
                   "inline": True,
                 },
                 {
                   "name": 'Version',
-                  "value": f"[{ version }]({repo.get('link')}/tree/{ version })",
+                  "value": f"[{ version }]({ link }/tree/{ version })",
                   "inline": True,
                 },
                 {
@@ -318,8 +327,8 @@ def post_build_created(current_app, payload):
                 "width": 0,
             },
             "footer": {
-                "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
+                "text": f"v{ version }",
+                "icon_url": f"{ link }/favicon.png",
             },
         }]
     })
@@ -337,42 +346,35 @@ def post_build_updated(current_app, payload):
     repo = payload.get('repo')
     build = payload.get('build')
     system = payload.get('system')
+    
     status = build.get('status')
     build_id = build.get('id')
-
-    with current_app.app_context():
-        database = get_database()
-        message = database.build.find_one({
-            'id': build_id,
-        })
-
-        if message.get('status') != status:
-            database.build.update_one(message,{'$set':{'status':status}})
-        else:
-             # no change, do nothing
-            return
-
-    
-    version = build.get('ref').split('/').pop()
+    build_number = build.get('number')
     started = build.get('started')
     finished = build.get('finished')
+    trigger = build.get('trigger')
+    trigger = trigger.replace('@hook', 'webhook')
+    trigger = trigger.replace('@cron', build.get('cron'))
+    version = build.get('ref').split('/').pop()
+    slug = repo.get('slug')
+    link = repo.get('link')
 
     payload = {
         'embeds': [{
             "type": "rich",
-            "title": f"{ repo.get('slug') } #{ build.get('number') }",
-            "url": f"{ system.get('link') }/{ repo.get('slug')}/{ build.get('number')}",
+            "title": f"{ slug } #{ build_number }",
+            "url": f"{ link }/{ slug }/{ build_number }",
             "description": build.get('message'),
             "color": BUILD_STATUS_COLOR.get(status),
             "fields": [
                 {
                   "name": 'Build',
-                  "value": build.get('number'),
+                  "value": build_number,
                   "inline": True,
                 },
                 {
                   "name": 'Trigger',
-                  "value": build.get('trigger').replace('@hook', 'webhook'),
+                  "value": trigger,
                   "inline": True,
                 },
                 {
@@ -382,17 +384,17 @@ def post_build_updated(current_app, payload):
                 },
                 {
                   "name": 'Repository',
-                  "value": f"[GitHub]({repo.get('link')})",
+                  "value": f"[GitHub]({ link })",
                   "inline": True,
                 },
                 {
                   "name": 'Version',
-                  "value": f"[{ version }]({repo.get('link')}/tree/{ version })",
+                  "value": f"[{ version }]({ link }/tree/{ version })",
                   "inline": True,
                 },
                 {
                   "name": 'Status',
-                  "value": build.get('status'),
+                  "value": status,
                   "inline": True,
                 },
             ],
@@ -402,25 +404,32 @@ def post_build_updated(current_app, payload):
                 "width": 0,
             },
             "footer": {
-                "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
+                "text": f"v{ version }",
+                "icon_url": f"{ link }/favicon.png",
             },
         }]
     }
 
-    if finished:
-        duration = finished - started
+    with current_app.app_context():
+        database = get_database()
+        post = database.build.find_one({'id': build_id })
 
-        payload['embeds'][0]['fields'].append({
-            'name': 'Duration',
-            'value': str(timedelta(seconds=duration)),
-            'inline': True,
-        })
+        if post.get('status') == status:
+            # no change, do nothing
+            return
+        
+        database.build.update_one(post,{'$set': {'status': status }})
 
-        with current_app.app_context():
-            database = get_database()
-            database.message.delete_one({
-                'buildId': build.get('id'),
+        if finished:
+            duration = finished - started
+
+            payload['embeds'][0]['fields'].append({
+                'name': 'Duration',
+                'value': str(timedelta(seconds=duration)),
+                'inline': True,
             })
+            
+            # build finished, so remove entry from database
+            database.build.delete_one({'id': build_id })
 
-    _edit_message(message['messageId'], payload)
+    _edit_message(post['messageId'], payload)

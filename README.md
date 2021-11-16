@@ -172,4 +172,8 @@ source test/repo_disabled.sh
 # build events
 source test/build_created.sh
 source test/build_updated.sh
+
+# choose one of these after build_update.sh
+source test/build_failure.sh
+source test/build_success.sh
 ```
