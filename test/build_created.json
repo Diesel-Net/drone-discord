@@ -48,7 +48,7 @@
   "build": {
     "id": 2088,
     "repo_id": 35,
-    "trigger": "anon",
+    "trigger": "@cron",
     "number": 189,
     "status": "pending",
     "event": "cron",
