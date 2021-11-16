@@ -338,6 +338,7 @@ def post_build_created(current_app, payload):
         database.build.insert_one({
             'id': build.get('id'),
             'status': build.get('status'),
+            'data': payload,
             'messageId': response.get('id'),
         })
 
@@ -418,7 +419,14 @@ def post_build_updated(current_app, payload):
             # no change, do nothing
             return
         
-        database.build.update_one(post,{'$set': {'status': status }})
+        database.build.update_one(
+            post, {
+                '$set': {
+                    'status': status,
+                    'data': payload, 
+                }
+            }
+        )
 
         if finished:
             duration = finished - started
