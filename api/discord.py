@@ -327,8 +327,8 @@ def post_build_created(current_app, payload):
                 "width": 0,
             },
             "footer": {
-                "text": f"v{ version }",
-                "icon_url": f"{ link }/favicon.png",
+                "text": f"v{ system.get('version') }",
+                "icon_url": f"{ system.get('link') }/favicon.png",
             },
         }]
     })
@@ -404,8 +404,8 @@ def post_build_updated(current_app, payload):
                 "width": 0,
             },
             "footer": {
-                "text": f"v{ version }",
-                "icon_url": f"{ link }/favicon.png",
+                "text": f"v{ system.get('version') }",
+                "icon_url": f"{ system.get('link') }/favicon.png",
             },
         }]
     }
