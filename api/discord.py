@@ -337,25 +337,16 @@ def post_build_updated(current_app, payload):
     repo = payload.get('repo')
     build = payload.get('build')
     system = payload.get('system')
+    
     status = build.get('status')
     build_id = build.get('id')
-
-    with current_app.app_context():
-        database = get_database()
-        message = database.build.find_one({
-            'id': build_id,
-        })
-
-        if message.get('status') != status:
-            database.build.update_one(message,{'$set':{'status':status}})
-        else:
-             # no change, do nothing
-            return
-
-    
-    version = build.get('ref').split('/').pop()
     started = build.get('started')
     finished = build.get('finished')
+    trigger = build.get('trigger')
+    trigger = trigger.replace('@hook', 'webhook')
+    trigger = trigger.replace('@cron', build.get('cron'))
+    version = build.get('ref').split('/').pop()
+    
 
     payload = {
         'embeds': [{
@@ -408,19 +399,25 @@ def post_build_updated(current_app, payload):
         }]
     }
 
-    if finished:
-        duration = finished - started
+    with current_app.app_context():
+        database = get_database()
+        post = database.build.find_one({'id': build_id })
 
-        payload['embeds'][0]['fields'].append({
-            'name': 'Duration',
-            'value': str(timedelta(seconds=duration)),
-            'inline': True,
-        })
+        if post.get('status') == status:
+            # no change, do nothing
+            return
+        
+        database.build.update_one(post,{'$set': {'status': status }})
 
-        with current_app.app_context():
-            database = get_database()
-            database.message.delete_one({
-                'buildId': build.get('id'),
+        if finished:
+            duration = finished - started
+
+            payload['embeds'][0]['fields'].append({
+                'name': 'Duration',
+                'value': str(timedelta(seconds=duration)),
+                'inline': True,
             })
+ 
+            database.build.delete_one({'id': build_id })
 
-    _edit_message(message['messageId'], payload)
+    _edit_message(post['messageId'], payload)
