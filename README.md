@@ -27,6 +27,14 @@ It might be worth pointing out that this service is currently leveraging [`disco
 * [x] No additional configuration required in `.drone.yml` pipeline files
 
 ## Screenshots
+
+
+![bot_online](screenshots/bot_online.png)
+
+![user_created](screenshots/user_created.png)
+
+![repo_enabled](screenshots/repo_enabled.png)
+
 ![build_pending](screenshots/build_pending.png)
 
 ![build_success](screenshots/build_success.png)
