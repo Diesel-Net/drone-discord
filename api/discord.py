@@ -278,15 +278,16 @@ def post_build_created(current_app, payload):
     trigger = build.get('trigger')
     trigger = trigger.replace('@hook', 'webhook')
     trigger = trigger.replace('@cron', build.get('cron', ''))
-    version = build.get('ref').split('/').pop()
-    slug = repo.get('slug')
-    link = repo.get('link')
+    git_version = build.get('ref').split('/').pop()
+    repo_name = repo.get('slug')
+    repo_url = repo.get('link')
+    drone_url = system.get('link')
 
     response = _create_message({
         'embeds': [{
             "type": "rich",
-            "title": f"{ slug } #{ build_number }",
-            "url": f"{ link }/{ slug }/{ build_number }",
+            "title": f"{ repo_name } #{ build_number }",
+            "url": f"{ drone_url }/{ repo_name }/{ build_number }",
             "description": build.get('message'),
             "color": BUILD_STATUS_COLOR.get(status),
             "fields": [
@@ -307,12 +308,12 @@ def post_build_created(current_app, payload):
                 },
                 {
                   "name": 'Repository',
-                  "value": f"[GitHub]({ link })",
+                  "value": f"[GitHub]({ repo_url })",
                   "inline": True,
                 },
                 {
                   "name": 'Version',
-                  "value": f"[{ version }]({ link }/tree/{ version })",
+                  "value": f"[{ git_version }]({ repo_url }/tree/{ git_version })",
                   "inline": True,
                 },
                 {
@@ -322,13 +323,13 @@ def post_build_created(current_app, payload):
                 },
             ],
             "thumbnail": {
-                "url": user.get('avatar'),
+                "url": build.get('author_avatar'),
                 "height": 0,
                 "width": 0,
             },
             "footer": {
                 "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
+                "icon_url": f"{ drone_url }/favicon.png",
             },
         }]
     })
@@ -356,15 +357,16 @@ def post_build_updated(current_app, payload):
     trigger = build.get('trigger')
     trigger = trigger.replace('@hook', 'webhook')
     trigger = trigger.replace('@cron', build.get('cron', ''))
-    version = build.get('ref').split('/').pop()
-    slug = repo.get('slug')
-    link = repo.get('link')
+    git_version = build.get('ref').split('/').pop()
+    repo_name = repo.get('slug')
+    repo_url = repo.get('link')
+    drone_url = system.get('link')
 
     payload = {
         'embeds': [{
             "type": "rich",
-            "title": f"{ slug } #{ build_number }",
-            "url": f"{ link }/{ slug }/{ build_number }",
+            "title": f"{ repo_name } #{ build_number }",
+            "url": f"{ drone_url }/{ repo_name }/{ build_number }",
             "description": build.get('message'),
             "color": BUILD_STATUS_COLOR.get(status),
             "fields": [
@@ -385,12 +387,12 @@ def post_build_updated(current_app, payload):
                 },
                 {
                   "name": 'Repository',
-                  "value": f"[GitHub]({ link })",
+                  "value": f"[GitHub]({ repo_url })",
                   "inline": True,
                 },
                 {
                   "name": 'Version',
-                  "value": f"[{ version }]({ link }/tree/{ version })",
+                  "value": f"[{ git_version }]({ repo_url }/tree/{ git_version })",
                   "inline": True,
                 },
                 {
@@ -406,21 +408,21 @@ def post_build_updated(current_app, payload):
             },
             "footer": {
                 "text": f"v{ system.get('version') }",
-                "icon_url": f"{ system.get('link') }/favicon.png",
+                "icon_url": f"{ drone_url }/favicon.png",
             },
         }]
     }
 
     with current_app.app_context():
         database = get_database()
-        post = database.build.find_one({'id': build_id })
+        previous_post = database.build.find_one({'id': build_id })
 
-        if post.get('status') == status:
+        if previous_post.get('status') == status:
             # no change, do nothing
             return
         
         database.build.update_one(
-            post, {
+            previous_post, {
                 '$set': {
                     'status': status,
                     'data': payload, 
@@ -440,4 +442,4 @@ def post_build_updated(current_app, payload):
             # build finished, so remove entry from database
             database.build.delete_one({'id': build_id })
 
-    _edit_message(post['messageId'], payload)
+    _edit_message(previous_post['messageId'], payload)
