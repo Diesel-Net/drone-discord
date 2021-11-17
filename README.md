@@ -176,20 +176,20 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
 
 #### Drone Events
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There should be a collection of sample curls in the `test` folder in this repository. These are useful for simulating drone events when running locally.
+
+:warning: All of these test curls have been signed using a webhook secret value of `webhook-secret` just as shown in the `.env` example configuration above.  
 ```bash
- # user events
- source test/user_created.sh
- source test/user_deleted.sh
+# user events
+source test/user_created.sh
+source test/user_deleted.sh
 
- # repo events
- source test/repo_enabled.sh
- source test/repo_disabled.sh
+# repo events
+source test/repo_enabled.sh
+source test/repo_disabled.sh
 
- # build events
- source test/build_created.sh
- source test/build_updated.sh
-
- # choose one of these after build_update.sh
- source test/build_failure.sh
- source test/build_success.sh
+# build events
+source test/build_created.sh
+source test/build_updated.sh
+source test/build_failure.sh
+source test/build_success.sh
 ```
