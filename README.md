@@ -19,7 +19,22 @@ It would have done the job just fine, however this was limited to only being abl
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For the other piece (optional), there is some minimal code hacked together with the sole purpose of connecting to the Gateway (WebSocket) API for being able to accurately reflect the bot user's _Online_ status. This client process periodically checks-in on the Rest API to make sure it's healthy and adjusts the bot user's online presence accordingly.
 It might be worth pointing out that this service is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is [no longer being maintained](https://gist.github.com/Rapptz/4a2f62751b9600a31a0d3c78100287f1), however I am confident that this _should_ still work for quite some time until Discord's Gateway API changes dramatically, for any reason. Thus an area of improvement could be to implement a lightweight Discord Websocket client from scratch, having only the features that it needs. 
 
+## Features
+* [x] Supports all emitted [Drone events](https://discourse.drone.io/t/how-to-use-global-webhooks/3755)
+* [x] Verifies [HTTP Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-10)
+* [x] API/Docker Healthchecks
+  * [x] Adjusts bot user's online/offline status accordingly
+* [x] No additional configuration required in `.drone.yml` pipeline files
+
 ## Screenshots
+
+
+![bot_online](screenshots/bot_online.png)
+
+![user_created](screenshots/user_created.png)
+
+![repo_enabled](screenshots/repo_enabled.png)
+
 ![build_pending](screenshots/build_pending.png)
 
 ![build_success](screenshots/build_success.png)
@@ -110,7 +125,8 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    ````
 
 2. Start MongoDB container.
-   Note that the `docker run` command is not able to see env vars for `-p` option so you will have to change the port numbers manually if going with a non-default configuration.
+   
+   :warning: Note that the `docker run` command is not able to see env vars passed in with the `-p` option so if going with a non-default configuration you will need to change the port numbers manually in the command below.
    ```bash
    dotenv run \
      docker run \
@@ -160,20 +176,20 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
 
 #### Drone Events
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There should be a collection of sample curls in the `test` folder in this repository. These are useful for simulating drone events when running locally.
+
+:warning: All of these test curls have been signed using a webhook secret value of `webhook-secret` just as shown in the `.env` example configuration above.  
 ```bash
- # user events
- source test/user_created.sh
- source test/user_deleted.sh
+# user events
+source test/user_created.sh
+source test/user_deleted.sh
 
- # repo events
- source test/repo_enabled.sh
- source test/repo_disabled.sh
+# repo events
+source test/repo_enabled.sh
+source test/repo_disabled.sh
 
- # build events
- source test/build_created.sh
- source test/build_updated.sh
-
- # choose one of these after build_update.sh
- source test/build_failure.sh
- source test/build_success.sh
+# build events
+source test/build_created.sh
+source test/build_updated.sh
+source test/build_failure.sh
+source test/build_success.sh
 ```
