@@ -190,6 +190,7 @@ source test/repo_disabled.sh
 # build events
 source test/build_created.sh
 source test/build_updated.sh
+source test/build_killed.sh
 source test/build_failure.sh
 source test/build_success.sh
 ```
