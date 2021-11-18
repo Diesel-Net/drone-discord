@@ -25,6 +25,7 @@ BUILD_STATUS_COLOR = {
     'running': COLOR['yellow'],
     'success': COLOR['green'],
     'failure': COLOR['red'],
+    'killed': COLOR['red'],
 }
 
 
