@@ -17,14 +17,13 @@ This could easily be modified to support other communications platforms, like Sl
 It might be worth pointing out that this service is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is [no longer being maintained](https://gist.github.com/Rapptz/4a2f62751b9600a31a0d3c78100287f1), however I am confident that this will still work for quite some time until Discord's Gateway API changes dramatically, for any reason. Thus an area of improvement could be to rewrite that piece by implementing a lightweight Discord Websocket client from scratch, having only the features and reconnect logic that it needs.
 
 ## Features
-* [x] Supports all emitted [Drone events](https://discourse.drone.io/t/how-to-use-global-webhooks/3755)
+* [x] Supports all [Drone events](https://discourse.drone.io/t/how-to-use-global-webhooks/3755)
 * [x] Verifies [HTTP Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-10)
 * [x] API/Docker Healthchecks
   * [x] Adjusts bot user's online/offline status accordingly
-* [x] No additional configuration required in `.drone.yml` pipeline files
+* [x] No configuration required in any `.drone.yml` pipeline files
 
 ## Screenshots
-
 
 ![bot_online](screenshots/bot_online.png)
 
