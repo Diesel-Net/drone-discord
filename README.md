@@ -5,18 +5,16 @@
 
 #### **Summary**
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A solution for posting [Drone](https://www.drone.io/)'s build logs to Discord. 
-Could be modified or extended to support other communications platforms (like Slack).
+This could easily be modified to support other communications platforms, like Slack.
 
 #### **Why?**
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A drone server can [be configured](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) to post all of it's events to an HTTP endoint of your choosing. 
-Just knowing that fact made Discord's low-effort webhooks solution (much like Discord's [GitHub integration](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)) look very tempting.
-It would have done the job just fine, however this was limited to only being able to create new messages. I specifically wanted the ability to update existing messages as well.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A drone server [can easily be configured](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) to post all of it's events to an HTTP endoint of your choosing. I figured this was a good opportunity for me to learn more about Discord's APIs as well.
 
 #### **Components**
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The main (and only necessary) component that does all the work, is a tiny Rest API (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is then used to log the events nicely in the configured channel. A Mongo database is deployed with this service for added robustness.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The main (and only necessary) component that does all the work, is a tiny Rest API (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is then used to log the events nicely in the configured channel.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For the other piece (optional), there is some minimal code hacked together with the sole purpose of connecting to the Gateway (WebSocket) API for being able to accurately reflect the bot user's _Online_ status. This client process periodically checks-in on the Rest API to make sure it's healthy and adjusts the bot user's online presence accordingly.
-It might be worth pointing out that this service is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is [no longer being maintained](https://gist.github.com/Rapptz/4a2f62751b9600a31a0d3c78100287f1), however I am confident that this _should_ still work for quite some time until Discord's Gateway API changes dramatically, for any reason. Thus an area of improvement could be to implement a lightweight Discord Websocket client from scratch, having only the features that it needs. 
+It might be worth pointing out that this service is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is [no longer being maintained](https://gist.github.com/Rapptz/4a2f62751b9600a31a0d3c78100287f1), however I am confident that this will still work for quite some time until Discord's Gateway API changes dramatically, for any reason. Thus an area of improvement could be to rewrite that piece by implementing a lightweight Discord Websocket client from scratch, having only the features and reconnect logic that it needs.
 
 ## Features
 * [x] Supports all emitted [Drone events](https://discourse.drone.io/t/how-to-use-global-webhooks/3755)
