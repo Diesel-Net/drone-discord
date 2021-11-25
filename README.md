@@ -13,7 +13,7 @@ This could easily be modified to support other communications platforms, like Sl
 #### **Components**
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The core (and only necessary) component that does all the work, is a tiny Rest API (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is then used to log the events nicely in the configured channel.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The other component (optional) contains some minimal code hacked together with the sole purpose of connecting to the Gateway (WebSocket) API for being able to accurately reflect the bot user's _Online_ status. This client process periodically checks-in on the Rest API to make sure it's healthy and adjusts the bot user's online presence accordingly.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The other (optional) component contains some minimal code hacked together with the sole purpose of connecting to the Gateway (WebSocket) API for being able to accurately reflect the bot user's _Online_ status. This client process periodically checks-in on the Rest API to make sure it's healthy and adjusts the bot user's online presence accordingly.
 It might be worth pointing out that this service is currently leveraging [`discord.py`](https://pypi.org/project/discord.py/) which is [no longer being maintained](https://gist.github.com/Rapptz/4a2f62751b9600a31a0d3c78100287f1), however I am confident that this will still work for quite some time until Discord's Gateway API changes dramatically, for any reason. Thus an area of improvement could be to rewrite that piece by implementing a lightweight Discord Websocket client from scratch, having only the features and reconnect logic that it needs.
 
 ## Features
