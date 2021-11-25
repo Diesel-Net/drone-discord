@@ -107,22 +107,22 @@ MONGO_INITDB_ROOT_USERNAME=root
 MONGO_INITDB_ROOT_PASSWORD=secret-password
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each component needs to executed in it's own terminal window, as they are started using blocking calls.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each component needs to executed in it's own terminal window, as they are all started with a blocking call.
 
 #### MongoDB
-1. Create Python Virtual Environment and activate it
+1. Create Python Virtual Environment and activate it.
    ```bash
    python3 -m venv mongo-venv && source mongo-venv/bin/activate
    ```
 
-2. install python dependencies
+2. install python dependencies.
    ```bash
    pip install "python-dotenv[cli]"
    ````
 
 2. Start MongoDB container.
    
-   :warning: Note that the `docker run` command is not able to see env vars passed in with the `-p` option so if going with a non-default configuration you will need to change the port numbers manually in the command below.
+   :warning: The `docker run` command is not able to see env vars passed in with the `-p` option so if going with a non-default configuration you will need to adjust the port numbers manually in the command below.
    ```bash
    dotenv run \
      docker run \
@@ -133,7 +133,7 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    ```
 
 #### HTTP Server
-1. Create Python Virtual Environment and activate it
+1. Create Python Virtual Environment and activate it.
    ```bash
    python3 -m venv server-venv && source server-venv/bin/activate
    ```
@@ -143,12 +143,12 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    pip install -r server-requirements.txt
    ```
 
-3. Start Flask Development Server.
+3. Start Flask Development Server. MongoDB should already be running.
    ```bash
    flask run
    ```
 
-   You may choose to reset the development database at any time.
+   You may choose to reset the development database at any time. MongoDB must be running.
    ```bash
    flask init-db
    ````
