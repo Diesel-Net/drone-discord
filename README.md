@@ -8,7 +8,7 @@
 This could easily be modified to support other communications platforms, like Slack.
 
 #### **Why?**
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A drone server [can easily be configured](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) to post all of it's events to an HTTP endoint of your choosing. I figured this was a good opportunity for me to learn more about Discord's APIs as well.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A drone server [can optionally be configured](https://discourse.drone.io/t/how-to-use-global-webhooks/3755) to post all of it's events to an HTTP endoint of your choosing. I figured this was a good opportunity for me to learn more about Discord's APIs as well.
 
 #### **Components**
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The core (and only necessary) component that does all the work, is a tiny Rest API (Flask App) for receiving the webhook events from the configured Drone Server. Once the payload is received and verified, Discord's REST API is then used to log the events nicely in the configured channel.
