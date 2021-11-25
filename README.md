@@ -107,7 +107,7 @@ MONGO_INITDB_ROOT_USERNAME=root
 MONGO_INITDB_ROOT_PASSWORD=secret-password
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each component needs to executed in it's own terminal window, as they are all started with a blocking call.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each component listed below needs to executed in it's own terminal window, as they are all started with a blocking call.
 
 #### MongoDB
 1. Create Python Virtual Environment and activate it.
@@ -143,12 +143,12 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    pip install -r server-requirements.txt
    ```
 
-3. Start Flask Development Server. MongoDB should already be running.
+3. Start Flask Development Server. A MongoDB instance should be running.
    ```bash
    flask run
    ```
 
-   You may choose to reset the development database at any time. MongoDB must be running.
+   You may choose to reset the development database at any time. A MongoDB must be running.
    ```bash
    flask init-db
    ````
