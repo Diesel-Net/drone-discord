@@ -34,10 +34,15 @@ DRONE_EVENT_HANDLERS = {
 
 def _construct_signature_string(headers):
     # https://tools.ietf.org/html/draft-cavage-http-signatures-10#section-2.3
-    signature_headers = re.search(
+    match = re.search(
         r'^.*headers=\"(.*?)\"', 
-        headers.get('Signature')
-    ).group(1).split(' ')
+        headers.get('Signature', '')
+    )
+
+    if not match:
+        return False
+
+    signature_headers = match.group(1).split(' ')
 
     signing_string = ''
     for header in signature_headers:
@@ -55,10 +60,15 @@ def _calculate_signature(key, signing_string):
 
 def _verify_signature(key, headers):
     # https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12#section-2.5
-    expected = re.search(
+    match = re.search(
         r'^.*signature=\"([a-zA-Z1-9\/\+\=].*?)\"', 
-        headers.get('Signature')
-    ).group(1)
+        headers.get('Signature', '')
+    )
+
+    if not match:
+        return False
+
+    expected = match.group(1)
 
     calculated = b64encode(
         _calculate_signature(
@@ -98,7 +108,6 @@ def post_events():
         },
     ).start()
 
-    #action(request.json)
     response['message'] = 'Job queued'
 
     return response, 200
