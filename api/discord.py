@@ -441,6 +441,6 @@ def post_build_updated(current_app, payload):
             })
             
             # build finished, so remove entry from database
-            database.build.delete_one({'id': build_id })
+            #database.build.delete_one({'id': build_id })
 
     _edit_message(previous_post['messageId'], payload)
