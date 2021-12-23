@@ -418,6 +418,10 @@ def post_build_updated(current_app, payload):
         database = get_database()
         previous_post = database.build.find_one({'id': build_id })
 
+        if not previous_post:
+            print(f"discord: unable to find previous build for { build_id }")
+            return
+
         if previous_post.get('status') == status:
             # no change, do nothing
             return
