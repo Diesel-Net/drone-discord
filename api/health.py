@@ -15,6 +15,6 @@ def get_health():
     }
     database = get_database() 
     database.health.insert_one(record)
-    database.health.delete_one({'timestamp': timestamp})
+    #database.health.delete_one({'timestamp': timestamp})
     return { 'message': 'Healthy',
              'timestamp': timestamp }, 200

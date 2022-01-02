@@ -82,11 +82,25 @@ It might be worth pointing out that this service is currently leveraging [`disco
 
 
 ## Deployments
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployed on docker swarm, and automated with Drone and Ansible.
-A convenience script is provided to invoke the ansible playbook manually if needed. You will need to ensure a proper SSH configuration and have a [default Ansible vault password set](https://docs.ansible.com/ansible/latest/user_guide/vault.html#setting-a-default-password-source). Please see [deploy.sh](deploy.sh) for hints.
+This application is configured and deployed automatically using [Drone CI](https://github.com/harness/drone), however there might be situations where you would prefer to do this manually. 
+
+You will need to have the [Ansible Vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html#encrypting-content-with-ansible-vault) password file configured on your machine, if there are any vaulted secrets. Please read the relevant ansible documentation on [setting a default password source](https://docs.ansible.com/ansible/latest/user_guide/vault.html#setting-a-default-password-source). If you are trying to reuse this Ansible configuration for your own purposes, then you will need to encrypt all of _your own_ secrets using _your own_ Ansible Vault password and replace those variables in the [Ansible configuration](.ansible).
+
+### Requirements
+I recommend [installing Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible) with `pip` (globally) versus other package managers like Apt or Brew. It makes upgrading and using third party modules much easier.
 ```bash
-source deploy.sh
+python3 -m pip install --user ansible
 ```
+
+### Steps
+1. Install roles (dependencies).
+   ```bash
+   ansible-galaxy install -r .ansible/roles/requirements.yaml -p .ansible/roles --force
+   ```
+2. Run playbook.
+   ```bash
+   ansible-playbook .ansible/deploy.yaml -i .ansible/inventories/production
+   ```
 
 
 ## Run it Locally
@@ -109,30 +123,24 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each component listed below needs to executed in it's own terminal window, as they are all started with a blocking call.
 
-#### MongoDB
-1. Create Python Virtual Environment and activate it.
+### MongoDB
+1. Set environment variables from `.env` file.
    ```bash
-   python3 -m venv mongo-venv && source mongo-venv/bin/activate
+   set -o allexport; source .env; set +o allexport
    ```
-
-2. install python dependencies.
-   ```bash
-   pip install "python-dotenv[cli]"
-   ````
 
 2. Start MongoDB container.
    
    :warning: The `docker run` command is not able to see env vars passed in with the `-p` option so if going with a non-default configuration you will need to adjust the port numbers manually in the command below.
    ```bash
-   dotenv run \
-     docker run \
-      -p 27017:27017 \
-      -e MONGO_INITDB_ROOT_USERNAME \
-      -e MONGO_INITDB_ROOT_PASSWORD \
-      mongo
+   docker run \
+     -p 27017:27017 \
+     -e MONGO_INITDB_ROOT_USERNAME \
+     -e MONGO_INITDB_ROOT_PASSWORD \
+     mongo
    ```
 
-#### HTTP Server
+### HTTP Server
 1. Create Python Virtual Environment and activate it.
    ```bash
    python3 -m venv server-venv && source server-venv/bin/activate
@@ -154,7 +162,7 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    ````
 
 
-#### Websocket Client
+### Websocket Client
 1. Create Python Virtual Environment and activate it
    ```bash
    python3 -m venv client-venv && source client-venv/bin/activate
@@ -170,7 +178,7 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
    python client.py
    ```
 
-#### Drone Events
+### Drone Events
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There should be a collection of sample curls in the `test` folder in this repository. These are useful for simulating drone events when running locally.
 
 :warning: All of these test curls have been signed using a webhook secret value of `webhook-secret` just as shown in the `.env` example configuration above.  
