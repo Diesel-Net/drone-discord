@@ -110,26 +110,20 @@ MONGO_INITDB_ROOT_PASSWORD=secret-password
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each component listed below needs to executed in it's own terminal window, as they are all started with a blocking call.
 
 #### MongoDB
-1. Create Python Virtual Environment and activate it.
+1. Set environment variables from `.env` file.
    ```bash
-   python3 -m venv mongo-venv && source mongo-venv/bin/activate
+   set -o allexport; source .env; set +o allexport
    ```
-
-2. install python dependencies.
-   ```bash
-   pip install "python-dotenv[cli]"
-   ````
 
 2. Start MongoDB container.
    
    :warning: The `docker run` command is not able to see env vars passed in with the `-p` option so if going with a non-default configuration you will need to adjust the port numbers manually in the command below.
    ```bash
-   dotenv run \
-     docker run \
-      -p 27017:27017 \
-      -e MONGO_INITDB_ROOT_USERNAME \
-      -e MONGO_INITDB_ROOT_PASSWORD \
-      mongo
+   docker run \
+     -p 27017:27017 \
+     -e MONGO_INITDB_ROOT_USERNAME \
+     -e MONGO_INITDB_ROOT_PASSWORD \
+     mongo
    ```
 
 #### HTTP Server
