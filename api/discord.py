@@ -422,6 +422,10 @@ def post_build_updated(current_app, payload):
             print(f"discord: unable to find previous build for { build_id }")
             return
 
+        if previous_post.get('status') in ['success', 'failure', 'killed']:
+            # one of 'success', 'failure', 'killed' already happened, do nothing
+            return
+
         if previous_post.get('status') == status:
             # no change, do nothing
             return
