@@ -1,14 +1,17 @@
 ---
 kind: pipeline
 type: docker
-name: Build Server
+name: Build & Deploy (prod)
 
 clone:
   depth: 1
 
+concurrency:
+  limit: 1
+
 steps:
 
-  - name: docker build and push (development)
+  - name: docker build & push (server)
     image: plugins/docker
     settings:
       dockerfile: server.Dockerfile
@@ -22,47 +25,8 @@ steps:
       repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-server
       tags:
         - ${DRONE_BRANCH}-latest
-    when:
-      branch:
-        - development
 
-  - name: docker build and push (production)
-    image: plugins/docker
-    settings:
-      dockerfile: server.Dockerfile
-      mirror: dockerhub.nexus.diesel.net
-      registry: docker.nexus.diesel.net
-      purge: no
-      username:
-        from_secret: nexus_user
-      password:
-        from_secret: nexus_pass
-      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-server
-      tags:
-        - production-latest
-    when:
-      branch:
-        - stable
-
-trigger:
-  branch:
-    - development
-    - stable
-  event:
-    - push
-
----
-
-kind: pipeline
-type: docker
-name: Build Client
-
-clone:
-  depth: 1
-
-steps:
-
-  - name: docker build and push (development)
+  - name: docker build & push (client)
     image: plugins/docker
     settings:
       dockerfile: client.Dockerfile
@@ -76,53 +40,10 @@ steps:
       repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-client
       tags:
         - ${DRONE_BRANCH}-latest
-    when:
-      branch:
-        - development
 
-  - name: docker build and push (production)
-    image: plugins/docker
-    settings:
-      dockerfile: client.Dockerfile
-      mirror: dockerhub.nexus.diesel.net
-      registry: docker.nexus.diesel.net
-      purge: no
-      username:
-        from_secret: nexus_user
-      password:
-        from_secret: nexus_pass
-      repo: docker.nexus.diesel.net/${DRONE_REPO_NAME}-client
-      tags:
-        - production-latest
-    when:
-      branch:
-        - stable
-
-trigger:
-  branch:
-    - development
-    - stable
-  event:
-    - push
-
----
-kind: pipeline
-type: docker
-name: Deploy
-
-clone:
-  depth: 1
-
-depends_on:
-  - 'Build Server'
-  - 'Build Client'
-
-steps:
-
-  - name: configure and deploy (docker swarm)
-    image: plugins/ansible:3
+  - name: deploy
+    image: docker.nexus.diesel.net/drone-ansible:2.13
     environment:
-      ANSIBLE_CONFIG: .ansible/ansible.cfg
       DRONE_WEBHOOK_SECRET:
         from_secret: drone_webhook_secret
       DISCORD_TOKEN:
@@ -138,8 +59,7 @@ steps:
       MONGO_INITDB_ROOT_PASSWORD:
         from_secret: mongo_initdb_root_password
     settings:
-      inventory: .ansible/inventories/production
-      extra_vars: version=production
+      inventory: .ansible/inventories/prod.yaml
       galaxy: .ansible/roles/requirements.yaml
       playbook: .ansible/deploy.yaml
       private_key:

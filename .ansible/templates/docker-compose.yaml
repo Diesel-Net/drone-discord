@@ -4,9 +4,9 @@ version: '3.8'
 services: 
 
   client:
-    image: {{ docker_registry }}/{{ repository }}-client:{{ version }}-latest
+    image: {{ docker_registry }}/{{ repository }}-client:{{ docker_tag }}
     volumes:
-      - {{ ssl_cert_file }}:/etc/ssl/certs/ca-certificates.crt
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt
     environment:
       REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
@@ -15,12 +15,12 @@ services:
       HEALTHCHECK_INTERVAL: {{ healthcheck_interval }}
       HEALTHCHECK_URL: '{{ healthcheck_url }}'
     networks:
-      - {{ docker_network }}
+      - {{ traefik_network }}
 
   server:
-    image: {{ docker_registry }}/{{ repository }}-server:{{ version }}-latest
+    image: {{ docker_registry }}/{{ repository }}-server:{{ docker_tag }}
     volumes:
-      - {{ ssl_cert_file }}:/etc/ssl/certs/ca-certificates.crt
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt
     deploy:
       labels:
         - traefik.enable=true
@@ -39,7 +39,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: '{{ mongo_initdb_root_username }}'
       MONGO_INITDB_ROOT_PASSWORD: '{{ mongo_initdb_root_password }}'
     networks:
-      - {{ docker_network }}
+      - {{ traefik_network }}
       - mongo_net
 
   database:
@@ -49,7 +49,7 @@ services:
       - {{ mongo_port_exposed }}:{{ mongo_port }}
     volumes: 
       - {{ data_dir }}:/data/db
-      - {{ ssl_cert_file }}:/etc/ssl/certs/ca-certificates.crt
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt
     environment:
       MONGO_INITDB_ROOT_USERNAME: '{{ mongo_initdb_root_username }}'
       MONGO_INITDB_ROOT_PASSWORD: '{{ mongo_initdb_root_password }}'
@@ -60,6 +60,6 @@ services:
 
 networks:
   mongo_net:
-  {{ docker_network }}:
+  {{ traefik_network }}:
     external:
-      name: {{ docker_network }}
+      name: {{ traefik_network }}
