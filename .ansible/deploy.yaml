@@ -2,6 +2,7 @@
   strategy: free
   roles:
     - application
+    - traefik
 
   tasks:
 
